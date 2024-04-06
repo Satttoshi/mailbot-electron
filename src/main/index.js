@@ -4,8 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { startMailsender } from './mailsender'
 import fs from 'fs'
-import path from 'path'
-import fileConfig from '../../file.config'
+import { appPath, contentFilePath, privateConfigFilePath } from './utils/file-paths'
 
 function createWindow() {
   // Create the browser window.
@@ -55,11 +54,10 @@ app.whenReady().then(() => {
 
   // IPC
   ipcMain.on('run-mailer', (event) => startMailsender(event))
+
   ipcMain.on('save-data', (event, data) => {
-    const appRootPath = app.getAppPath()
-    const filePath = path.join(appRootPath, 'resources', `${fileConfig.contentFileName}.txt`)
-    console.log('Saving data to', filePath)
-    fs.writeFile(filePath, data, (err) => {
+    console.log('Saving data to', contentFilePath)
+    fs.writeFile(contentFilePath, data, (err) => {
       if (err) {
         console.error('Failed to save data', err)
         return
@@ -67,8 +65,31 @@ app.whenReady().then(() => {
       console.log('Data saved successfully.')
     })
   })
+
+  ipcMain.on('save-private-config-json', (event, data) => {
+    const configObject = {
+      spreadsheet_id: data.spreadsheet_id || 'please enter a spreadsheets ID',
+      credentials:
+        JSON.parse(data.credentials) ||
+        'please enter valid google service-account json credentials',
+      mailsender: data.mailsender || 'please enter a valid google email address',
+      mailpassword: data.mailpassword || 'please enter a valid google email app-password',
+      min: data.min || 20,
+      max: data.max || 120
+    }
+    // pretty print the json string
+    const configJsonString = JSON.stringify(configObject, null, 2)
+    fs.writeFile(privateConfigFilePath, configJsonString, (err) => {
+      if (err) {
+        console.error('Failed to save data', err)
+        return
+      }
+      console.log('Data saved successfully.')
+    })
+  })
+
   ipcMain.handle('get-app-path', async () => {
-    return app.getAppPath()
+    return appPath
   })
 
   createWindow()
