@@ -6,6 +6,7 @@ function Settings() {
     credentials: '',
     mailsender: '',
     mailpassword: '',
+    mailcredentials: [{ name: '', email: '', password: '' }],
     min: '',
     max: ''
   })
@@ -42,6 +43,26 @@ function Settings() {
       ...prevState,
       [name]: value
     }))
+  }
+
+  const handleMailCredentialsChange = (index, field, value) => {
+    const updatedMailCredentials = formData.mailcredentials.map((credential, i) => {
+      if (i === index) {
+        return { ...credential, [field]: value }
+      }
+      return credential
+    })
+    setFormData({ ...formData, mailcredentials: updatedMailCredentials })
+  }
+
+  const addMailCredential = () => {
+    const newCredential = { name: '', email: '', password: '' }
+    setFormData({ ...formData, mailcredentials: [...formData.mailcredentials, newCredential] })
+  }
+
+  const removeMailCredential = (index) => {
+    const filteredCredentials = formData.mailcredentials.filter((_, i) => i !== index)
+    setFormData({ ...formData, mailcredentials: filteredCredentials })
   }
 
   const handleSubmit = (e) => {
@@ -107,6 +128,53 @@ function Settings() {
             value={formData.mailpassword}
             onChange={handleChange}
           />
+        </div>
+
+        {formData.mailcredentials.map((credential, index) => (
+          <div key={index} className="mb-4">
+            <div className="flex gap-4 mb-2">
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text"
+                placeholder="Name"
+                value={credential.name}
+                onChange={(e) => handleMailCredentialsChange(index, 'name', e.target.value)}
+              />
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="email"
+                placeholder="Email"
+                value={credential.email}
+                onChange={(e) => handleMailCredentialsChange(index, 'email', e.target.value)}
+              />
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="password"
+                placeholder="Password"
+                value={credential.password}
+                onChange={(e) => handleMailCredentialsChange(index, 'password', e.target.value)}
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline"
+                onClick={() => removeMailCredential(index)}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        ))}
+
+        <div className="flex justify-center mb-4">
+          <button
+            type="button"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={addMailCredential}
+          >
+            Add Another Credential
+          </button>
         </div>
         <div className="mb-4 flex gap-4">
           <div className="flex-1">

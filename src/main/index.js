@@ -74,6 +74,7 @@ app.whenReady().then(() => {
         'please enter valid google service-account json credentials',
       mailsender: data.mailsender || 'please enter a valid google email address',
       mailpassword: data.mailpassword || 'please enter a valid google email app-password',
+      mailcredentials: data.mailcredentials ?? [],
       min: data.min || 20,
       max: data.max || 120
     }
