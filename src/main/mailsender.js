@@ -1,18 +1,48 @@
-import fileConfig from '../../file.config'
+import nodemailer from 'nodemailer'
+import { GoogleSpreadsheet } from 'google-spreadsheet'
+import fs from 'fs'
 
-require('dotenv').config()
+import { contentFilePath, privateConfigFilePath } from './utils/file-paths'
 
-const nodemailer = require('nodemailer')
-const { GoogleSpreadsheet } = require('google-spreadsheet')
-const fs = require('fs')
+function readConfig() {
+  return new Promise((resolve, reject) => {
+    fs.readFile(privateConfigFilePath, 'utf-8', (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        try {
+          const config = JSON.parse(data)
+          resolve(config)
+        } catch (parseError) {
+          reject(parseError)
+        }
+      }
+    })
+  })
+}
 
-//Google sheets
-const creds = JSON.parse(process.env.credentials)
-const doc = new GoogleSpreadsheet(process.env.spreadsheet_id)
+async function useConfig() {
+  try {
+    return await readConfig()
+  } catch (error) {
+    console.error('Failed to read or parse the config file:', error)
+    return null
+  }
+}
 
-// Mail Login
-const mailsender = process.env.mailsender
-const mailpassword = process.env.mailpassword
+fs.watchFile(privateConfigFilePath, () => {
+  console.log('Config file updated. Reloading...')
+  // Debounce the reload
+  setTimeout(() => {
+    useConfig()
+      .then((config) => {
+        if (config) {
+          console.log('Config reloaded')
+        }
+      })
+      .catch((err) => console.error('Failed to reload config:', err))
+  }, 1000)
+})
 
 // Mail Title
 const title = 'Photo and video editing services!'
@@ -24,34 +54,31 @@ function delay(time) {
   })
 }
 
-// Create a transporter object
-let transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: mailsender,
-    pass: mailpassword
-  }
-})
-
 // Define the email options
 let mailOptions = {}
 
-function changeMailOptions(mail) {
-  return new Promise(function (resolve) {
-    // Mail content
-    const txt = fs.readFileSync(`resources/${fileConfig.contentFileName}.txt`, 'utf-8')
-    mailOptions = {
-      from: mailsender,
-      to: mail,
-      subject: title,
-      text: txt
-    }
-    resolve()
-  })
+async function changeMailOptions(mail) {
+  const config = await useConfig()
+  const txt = fs.readFileSync(contentFilePath, 'utf-8')
+  mailOptions = {
+    from: config.mailsender,
+    to: mail,
+    subject: title,
+    text: txt
+  }
 }
 
 // Send the email
-function mailSender() {
+async function mailSender() {
+  const config = await useConfig()
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: config.mailsender,
+      pass: config.mailpassword
+    }
+  })
+
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error)
@@ -67,7 +94,10 @@ let dedupedArr = []
 
 // bring sheet row into array "currentSheet"
 async function updateSheet() {
-  await doc.useServiceAccountAuth(creds)
+  const config = await useConfig()
+  const doc = new GoogleSpreadsheet(config.spreadsheet_id)
+
+  await doc.useServiceAccountAuth(config.credentials)
   await doc.loadInfo()
   const sheet = doc.sheetsByIndex[0]
   const rows = await sheet.getRows()
@@ -95,15 +125,20 @@ function removeDuplicates(arr) {
 
 //Main
 async function main(log) {
-  const min = process.env.min * 1000
-  const max = process.env.max * 1000
+  const config = await useConfig()
+  if (!config) {
+    log('No config found')
+    return
+  }
+  const min = config.min * 1000
+  const max = config.max * 1000
   const result = await updateSheet()
   console.log(result)
 
   //Add Timestamps, update Mail configs
   for (let i = 0; i < dedupedArr.length; i++) {
     await changeMailOptions(dedupedArr[i])
-    // mailSender()
+    await mailSender()
     log(`Send to: ${dedupedArr[i]} Index: ${i + 1}`)
     for (let j = 0; j < 10; j++) {
       await delay(100)
@@ -123,9 +158,12 @@ export function startMailsender(event) {
     event.sender.send('message', message)
   }
 
-  console.log('Mailsender started')
-  event.sender.send('message', 'Mailsender started')
-  main(log).then(() => {
-    event.sender.send('message', 'Mailsender finished')
-  })
+  log('Mailsender started')
+  main(log)
+    .then(() => {
+      log('Mailsender finished')
+    })
+    .catch(log)
 }
+
+useConfig().catch((err) => console.error('Failed to init private-config.json:', err))
