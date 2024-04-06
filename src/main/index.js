@@ -11,7 +11,9 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
+    title: 'Pypenschuch Bot',
     show: false,
+    icon: appPath + '/resources/icon.ico',
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
