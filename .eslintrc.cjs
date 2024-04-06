@@ -1,4 +1,7 @@
 module.exports = {
+  rules: {
+    'react/prop-types': 'off',
+  },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
