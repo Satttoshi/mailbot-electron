@@ -2,6 +2,7 @@ import Versions from './components/Versions'
 import { useStore } from './hooks/useStore'
 import { useIPCEvents } from './hooks/useIPCEvents'
 import Textarea from './components/Textarea'
+import ConsoleTextarea from './components/ConsoleTextarea'
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents()
@@ -23,12 +24,8 @@ function App() {
           write txt
         </button>
       </div>
-      <div className="flex flex-col items-center">
-        {messageLog.map((dataItem, index) => (
-          <span key={index}>{dataItem}</span>
-        ))}
-      </div>
       <Textarea />
+      <ConsoleTextarea />
       <Versions></Versions>
     </>
   )

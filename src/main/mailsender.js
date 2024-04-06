@@ -107,7 +107,7 @@ async function main() {
       timeZone: 'Europe/Berlin'
     })
     await changeMailOptions(dedupedArr[i])
-    mailSender()
+    // mailSender()
     console.log(`${currentTime} Send to: ${dedupedArr[i]} Index: ${i + 1}`)
     if (i + 1 < dedupedArr.length) {
       await delay(Math.floor(Math.random() * (max - min) + min))
