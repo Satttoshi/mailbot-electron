@@ -13,7 +13,6 @@ const mailsender = process.env.mailsender
 const mailpassword = process.env.mailpassword
 
 // Mail content
-const html = fs.readFileSync('content.html', 'utf-8')
 const txt = fs.readFileSync('content.txt', 'utf-8')
 
 // Mail Title
@@ -107,7 +106,7 @@ async function main() {
       timeZone: 'Europe/Berlin'
     })
     await changeMailOptions(dedupedArr[i])
-    mailSender()
+    // mailSender()
     console.log(`${currentTime} Send to: ${dedupedArr[i]} Index: ${i + 1}`)
     if (i + 1 < dedupedArr.length) {
       await delay(Math.floor(Math.random() * (max - min) + min))
@@ -119,6 +118,8 @@ async function main() {
 
 export function startMailsender(event) {
   console.log('Mailsender started')
-  const message = process.env.spreadsheet_id
-  event.sender.send('message', message)
+  event.sender.send('message', 'Mailsender started')
+  main().then(() => {
+    event.sender.send('message', 'Mailsender finished')
+  })
 }

@@ -50,7 +50,7 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
+  // IPC
   ipcMain.on('run-mailer', (event) => startMailsender(event))
 
   createWindow()

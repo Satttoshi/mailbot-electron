@@ -1,22 +1,10 @@
 import Versions from './components/Versions'
-import { useEffect, useState } from 'react'
+import { useStore } from './hooks/useStore'
+import { useIPCEvents } from './hooks/useIPCEvents'
 
 function App() {
-  const [dataLog, setDataLog] = useState([])
-  console.log('dataLog', dataLog)
-  const ipcHandle = () => window.electron.ipcRenderer.send('run-mailer')
-
-  useEffect(() => {
-    const handlePong = (event, arg) => {
-      setDataLog((oldDataLog) => [...oldDataLog, arg])
-    }
-
-    const removePongListener = window.electron.ipcRenderer.on('message', handlePong)
-
-    return () => {
-      removePongListener()
-    }
-  }, [])
+  const { ipcHandle } = useIPCEvents()
+  const messageLog = useStore((state) => state.messageLog)
 
   return (
     <>
@@ -29,7 +17,7 @@ function App() {
         </button>
       </div>
       <div className="flex flex-col items-center">
-        {dataLog.map((dataItem, index) => (
+        {messageLog.map((dataItem, index) => (
           <span key={index}>{dataItem}</span>
         ))}
       </div>
