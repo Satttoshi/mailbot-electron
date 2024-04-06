@@ -8,11 +8,11 @@ export const useIPCEvents = () => {
   const writeMailContentToTxt = () => window.electron.ipcRenderer.send('save-data', contentText)
 
   useEffect(() => {
-    const handlePong = (event, arg) => {
+    const handleMessage = (event, arg) => {
       setMessageLog(arg)
     }
 
-    const removePongListener = window.electron.ipcRenderer.on('message', handlePong)
+    const removePongListener = window.electron.ipcRenderer.on('message', handleMessage)
 
     return () => {
       removePongListener()
