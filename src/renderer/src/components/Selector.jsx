@@ -12,8 +12,10 @@ const Selector = () => {
         <button
           key={index}
           className={`border-2 ${
-            selectedIndex === index ? 'border-blue-500 bg-blue-100' : 'border-gray-300'
-          } px-4 py-2 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
+            selectedIndex === index
+              ? 'border-blue-500 bg-purple-950 text-white'
+              : 'text-white border-gray-300 bg-purple-900'
+          } px-4 py-2 rounded hover:bg-purple-950 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
           onClick={() => setSelectedIndex(index)}
         >
           {element}

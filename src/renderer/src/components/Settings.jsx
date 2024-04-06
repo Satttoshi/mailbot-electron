@@ -76,13 +76,13 @@ function Settings() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
+    <div className="flex flex-col items-center justify-center mt-4">
       <form
-        className="w-full max-w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        className="w-full max-w-full bg-purple-900 shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={handleSubmit}
       >
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spreadsheet_id">
+          <label className="block text-white text-sm font-bold mb-2" htmlFor="spreadsheet_id">
             Spreadsheet ID:
           </label>
           <input
@@ -95,7 +95,7 @@ function Settings() {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="credentials">
+          <label className="block text-white text-sm font-bold mb-2" htmlFor="credentials">
             Credentials (JSON String):
           </label>
           <textarea
@@ -108,7 +108,7 @@ function Settings() {
           ></textarea>
         </div>
 
-        <label className="block text-gray-700 text-sm font-bold mb-2">Sender Emails</label>
+        <label className="block text-white text-sm font-bold mb-2">Sender Emails</label>
         {formData.mailcredentials.map((credential, index) => (
           <div key={index} className="mb-4">
             <div className="flex gap-4 mb-2">
@@ -160,7 +160,7 @@ function Settings() {
         </div>
         <div className="mb-4 flex gap-4">
           <div className="flex-1">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="min">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="min">
               Min:
             </label>
             <input
@@ -173,7 +173,7 @@ function Settings() {
             />
           </div>
           <div className="flex-1">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="max">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="max">
               Max:
             </label>
             <input

@@ -142,7 +142,7 @@ async function main(log, selectedMailIndex) {
   //Add Timestamps, update Mail configs
   for (let i = 0; i < dedupedArr.length; i++) {
     await changeMailOptions(dedupedArr[i], selectedMailIndex)
-    await mailSender(selectedMailIndex)
+    // await mailSender(selectedMailIndex)
     log(`Send to: ${dedupedArr[i]} Index: ${i + 1}`)
     if (i + 1 < dedupedArr.length) {
       await delay(Math.floor(Math.random() * (max - min) + min))

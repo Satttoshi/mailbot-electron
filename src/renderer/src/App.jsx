@@ -12,7 +12,7 @@ function App() {
   const selectedIndex = useStore((state) => state.selectedIndex)
 
   return (
-    <>
+    <div className="bg-fuchsia-300 p-2">
       <div className="flex flex-col items-center justify-center p-4">
         <button
           className="bg-green-500 hover:bg-green-700 text-neutral-900 font-bold py-2 px-4 rounded"
@@ -27,7 +27,7 @@ function App() {
       <Settings />
       <Versions></Versions>
       <Toast />
-    </>
+    </div>
   )
 }
 
