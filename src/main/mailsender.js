@@ -102,7 +102,6 @@ async function main(log) {
 
   //Add Timestamps, update Mail configs
   for (let i = 0; i < dedupedArr.length; i++) {
-    const now = new Date()
     await changeMailOptions(dedupedArr[i])
     // mailSender()
     log(`Send to: ${dedupedArr[i]} Index: ${i + 1}`)
