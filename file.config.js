@@ -1,5 +1,6 @@
 const fileConfig = {
-  contentFileName: 'myFile'
+  contentFileName: 'content',
+  privateConfigFileName: 'private-config'
 }
 
 export default fileConfig
