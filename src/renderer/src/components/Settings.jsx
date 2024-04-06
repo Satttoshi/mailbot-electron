@@ -1,0 +1,152 @@
+import { useEffect, useState } from 'react'
+
+function Settings() {
+  const [formData, setFormData] = useState({
+    spreadsheet_id: '',
+    credentials: '',
+    mailsender: '',
+    mailpassword: '',
+    min: '',
+    max: ''
+  })
+
+  useEffect(() => {
+    const fetchPrivateConfigJson = async () => {
+      const privateConfigJsonString = await window.api.readPrivateConfigFile()
+      if (privateConfigJsonString) {
+        try {
+          // Parse the JSON string into an object
+          const configObject = JSON.parse(privateConfigJsonString)
+          // Ensure that the 'credentials' property is kept as a JSON string for your form
+          // If 'credentials' is an object, stringify it; otherwise, use it as is or default to an empty string
+          const credentials =
+            typeof configObject.credentials === 'object'
+              ? JSON.stringify(configObject.credentials, null, 2)
+              : configObject.credentials || ''
+          // Update the form data, ensuring credentials is a string
+          setFormData({ ...configObject, credentials })
+        } catch (error) {
+          console.error('Error parsing the private config JSON:', error)
+        }
+      } else {
+        console.error("No config found or the config couldn't be read.")
+      }
+    }
+
+    fetchPrivateConfigJson().catch(console.error)
+  }, [])
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    window.electron.ipcRenderer.send('save-private-config-json', formData)
+    console.log('Form data submitted:', formData)
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center p-4">
+      <form
+        className="w-full max-w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        onSubmit={handleSubmit}
+      >
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spreadsheet_id">
+            Spreadsheet ID:
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="spreadsheet_id"
+            type="text"
+            name="spreadsheet_id"
+            value={formData.spreadsheet_id}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="credentials">
+            Credentials (JSON String):
+          </label>
+          <textarea
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="credentials"
+            name="credentials"
+            value={formData.credentials}
+            onChange={handleChange}
+            rows="4"
+          ></textarea>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="mailsender">
+            Mail Sender:
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="mailsender"
+            type="text"
+            name="mailsender"
+            value={formData.mailsender}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="mailpassword">
+            Mail Password:
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            id="mailpassword"
+            type="password"
+            name="mailpassword"
+            value={formData.mailpassword}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-4 flex gap-4">
+          <div className="flex-1">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="min">
+              Min:
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="min"
+              type="number"
+              name="min"
+              value={formData.min}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex-1">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="max">
+              Max:
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="max"
+              type="number"
+              name="max"
+              value={formData.max}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div className="flex items-center justify-between">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+export default Settings
