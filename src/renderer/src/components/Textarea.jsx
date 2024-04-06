@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useStore } from '../hooks/useStore'
 
-function Textarea() {
+function Textarea({ onSave }) {
   const contentText = useStore((state) => state.contentText)
   const setContentText = useStore((state) => state.setContentText)
 
@@ -19,12 +19,22 @@ function Textarea() {
   }
 
   return (
-    <textarea
-      className="mt-1 block w-full h-64 p-2.5 text-sm text-gray-900 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-      value={contentText}
-      onChange={handleChange}
-      placeholder="Type something..."
-    />
+    <>
+      <div className="flex flex-col items-center justify-center">
+        <textarea
+          className="mb-2 block w-full h-64 p-2.5 text-sm text-gray-900 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          value={contentText}
+          onChange={handleChange}
+          placeholder="Type something..."
+        />
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={onSave}
+        >
+          update mail content
+        </button>
+      </div>
+    </>
   )
 }
 

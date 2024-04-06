@@ -3,30 +3,30 @@ import { useIPCEvents } from './hooks/useIPCEvents'
 import Textarea from './components/Textarea'
 import ConsoleTextarea from './components/ConsoleTextarea'
 import Settings from './components/Settings'
+import Toast from './components/Toast'
+import Selector from './components/Selector'
+import { useStore } from './hooks/useStore'
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents()
+  const selectedIndex = useStore((state) => state.selectedIndex)
 
   return (
     <>
-      <div className="actions">
+      <div className="flex flex-col items-center justify-center p-4">
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={runMailer}
+          className="bg-green-500 hover:bg-green-700 text-neutral-900 font-bold py-2 px-4 rounded"
+          onClick={() => runMailer(selectedIndex)}
         >
-          run mailer
-        </button>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={writeMailContentToTxt}
-        >
-          write txt
+          Start Mailbot
         </button>
       </div>
-      <Textarea />
+      <Selector />
+      <Textarea onSave={writeMailContentToTxt} />
       <ConsoleTextarea />
       <Settings />
       <Versions></Versions>
+      <Toast />
     </>
   )
 }
