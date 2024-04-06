@@ -5,6 +5,15 @@
   "main": "./out/main/index.js",
   "author": "js",
   "homepage": "https://electron-vite.org",
+  "build": {
+    "extraResources": [
+      {
+        "from": "./resources/",
+        "to": "resources/",
+        "filter": ["**/*"]
+      }
+    ]
+  },
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
