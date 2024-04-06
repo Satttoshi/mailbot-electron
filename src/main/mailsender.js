@@ -1,3 +1,5 @@
+import fileConfig from '../../file.config'
+
 require('dotenv').config()
 
 const nodemailer = require('nodemailer')
@@ -13,7 +15,7 @@ const mailsender = process.env.mailsender
 const mailpassword = process.env.mailpassword
 
 // Mail content
-const txt = fs.readFileSync('resources/content.txt', 'utf-8')
+const txt = fs.readFileSync(`resources/${fileConfig.contentFileName}.txt`, 'utf-8')
 
 // Mail Title
 const title = 'Photo and video editing services!'
@@ -106,7 +108,7 @@ async function main() {
       timeZone: 'Europe/Berlin'
     })
     await changeMailOptions(dedupedArr[i])
-    // mailSender()
+    mailSender()
     console.log(`${currentTime} Send to: ${dedupedArr[i]} Index: ${i + 1}`)
     if (i + 1 < dedupedArr.length) {
       await delay(Math.floor(Math.random() * (max - min) + min))
