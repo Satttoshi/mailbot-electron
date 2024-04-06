@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import fileConfig from '../../file.config'
 
-const readFileContents = async () => {
+const readContentFile = async () => {
   const appPath = await ipcRenderer.invoke('get-app-path')
   const filePath = path.join(appPath, `resources/${fileConfig.contentFileName}.txt`)
   try {
@@ -15,9 +15,21 @@ const readFileContents = async () => {
   }
 }
 
+const readPrivateConfigFile = async () => {
+  const appPath = await ipcRenderer.invoke('get-app-path')
+  const filePath = path.join(appPath, `resources/${fileConfig.privateConfigFileName}.json`)
+  try {
+    return fs.readFileSync(filePath, { encoding: 'utf-8' })
+  } catch (error) {
+    console.error('Error reading file:', error)
+    return ''
+  }
+}
+
 // Custom APIs for renderer
 const api = {
-  readFile: readFileContents
+  readContentFile,
+  readPrivateConfigFile
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
