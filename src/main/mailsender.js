@@ -4,6 +4,7 @@ import fs from 'fs'
 
 import { contentFilePath, privateConfigFilePath } from './utils/file-paths'
 
+// Read private-config.json file on demand
 function readConfig() {
   return new Promise((resolve, reject) => {
     fs.readFile(privateConfigFilePath, 'utf-8', (err, data) => {
@@ -21,6 +22,7 @@ function readConfig() {
   })
 }
 
+// load the config file
 async function useConfig() {
   try {
     return await readConfig()
@@ -30,6 +32,7 @@ async function useConfig() {
   }
 }
 
+// Watch the config file for changes, to always use the latest config in runtime
 fs.watchFile(privateConfigFilePath, () => {
   console.log('Config file updated. Reloading...')
   // Debounce the reload
@@ -71,6 +74,7 @@ async function changeMailOptions(mail) {
 // Send the email
 async function mailSender() {
   const config = await useConfig()
+  // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -78,7 +82,7 @@ async function mailSender() {
       pass: config.mailpassword
     }
   })
-
+  // send mail with defined transport object
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error)
@@ -93,7 +97,7 @@ const currentSheet = []
 let dedupedArr = []
 
 // bring sheet row into array "currentSheet"
-async function updateSheet() {
+async function updateSheet(log) {
   const config = await useConfig()
   const doc = new GoogleSpreadsheet(config.spreadsheet_id)
 
@@ -108,8 +112,8 @@ async function updateSheet() {
   }
   // Remove duplicates
   dedupedArr = removeDuplicates(currentSheet)
-  console.log(dedupedArr)
-  console.log('Completed removing duplicates from current sheet')
+  log(dedupedArr)
+  log('Completed removing duplicates from current sheet')
   return 'Completed loading current sheet with ' + dedupedArr.length + ' entries mulaa\n'
 }
 
@@ -132,7 +136,7 @@ async function main(log) {
   }
   const min = config.min * 1000
   const max = config.max * 1000
-  const result = await updateSheet()
+  const result = await updateSheet(log)
   console.log(result)
 
   //Add Timestamps, update Mail configs
@@ -166,4 +170,5 @@ export function startMailsender(event) {
     .catch(log)
 }
 
+// Init the config on startup
 useConfig().catch((err) => console.error('Failed to init private-config.json:', err))
