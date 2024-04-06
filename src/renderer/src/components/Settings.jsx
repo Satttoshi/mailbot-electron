@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useStore } from '../hooks/useStore'
 
 function Settings() {
   const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ function Settings() {
     min: '',
     max: ''
   })
+
+  const setMailNames = useStore((state) => state.setMailNames)
 
   useEffect(() => {
     const fetchPrivateConfigJson = async () => {
@@ -24,6 +27,8 @@ function Settings() {
               : configObject.credentials || ''
           // Update the form data, ensuring credentials is a string
           setFormData({ ...configObject, credentials })
+          // Update the mail names in the global store
+          setMailNames(configObject.mailcredentials.map((credential) => credential.name))
         } catch (error) {
           console.error('Error parsing the private config JSON:', error)
         }
@@ -67,6 +72,7 @@ function Settings() {
     e.preventDefault()
     window.electron.ipcRenderer.send('save-private-config-json', formData)
     console.log('Form data submitted:', formData)
+    setMailNames(formData.mailcredentials.map((credential) => credential.name))
   }
 
   return (
@@ -182,7 +188,7 @@ function Settings() {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Submit
+            Update Settings
           </button>
         </div>
       </form>
