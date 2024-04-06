@@ -117,6 +117,7 @@ function Settings() {
                 type="text"
                 placeholder="Name"
                 value={credential.name}
+                required
                 onChange={(e) => handleMailCredentialsChange(index, 'name', e.target.value)}
               />
               <input
@@ -124,6 +125,7 @@ function Settings() {
                 type="email"
                 placeholder="Email"
                 value={credential.email}
+                required
                 onChange={(e) => handleMailCredentialsChange(index, 'email', e.target.value)}
               />
               <input
@@ -131,6 +133,7 @@ function Settings() {
                 type="password"
                 placeholder="Password"
                 value={credential.password}
+                required
                 onChange={(e) => handleMailCredentialsChange(index, 'password', e.target.value)}
               />
               <div className="flex">
