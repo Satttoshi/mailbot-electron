@@ -94,7 +94,7 @@ function removeDuplicates(arr) {
 }
 
 //Main
-async function main() {
+async function main(log) {
   const min = process.env.min * 1000
   const max = process.env.max * 1000
   const result = await updateSheet()
@@ -103,24 +103,30 @@ async function main() {
   //Add Timestamps, update Mail configs
   for (let i = 0; i < dedupedArr.length; i++) {
     const now = new Date()
-    const currentTime = now.toLocaleString('en-US', {
-      timeZone: 'Europe/Berlin'
-    })
     await changeMailOptions(dedupedArr[i])
     // mailSender()
-    console.log(`${currentTime} Send to: ${dedupedArr[i]} Index: ${i + 1}`)
+    log(`Send to: ${dedupedArr[i]} Index: ${i + 1}`)
+    for (let j = 0; j < 10; j++) {
+      await delay(100)
+      log('Sending...')
+    }
     if (i + 1 < dedupedArr.length) {
       await delay(Math.floor(Math.random() * (max - min) + min))
     }
   }
   await delay(2000)
-  console.log('\nNo more EMAILS! Pypenschuch, Bot ist fertig :)')
+  log('No more EMAILS! Pypenschuch, Bot ist fertig :)')
 }
 
 export function startMailsender(event) {
+  function log(message) {
+    console.log(message)
+    event.sender.send('message', message)
+  }
+
   console.log('Mailsender started')
   event.sender.send('message', 'Mailsender started')
-  main().then(() => {
+  main(log).then(() => {
     event.sender.send('message', 'Mailsender finished')
   })
 }
