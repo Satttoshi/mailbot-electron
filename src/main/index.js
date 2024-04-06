@@ -53,7 +53,7 @@ app.whenReady().then(() => {
   })
 
   // IPC
-  ipcMain.on('run-mailer', (event) => startMailsender(event))
+  ipcMain.on('run-mailer', (event, selectedMailIndex) => startMailsender(event, selectedMailIndex))
 
   ipcMain.on('save-data', (event, data) => {
     console.log('Saving data to', contentFilePath)
@@ -72,8 +72,6 @@ app.whenReady().then(() => {
       credentials:
         JSON.parse(data.credentials) ||
         'please enter valid google service-account json credentials',
-      mailsender: data.mailsender || 'please enter a valid google email address',
-      mailpassword: data.mailpassword || 'please enter a valid google email app-password',
       mailcredentials: data.mailcredentials ?? [],
       min: data.min || 20,
       max: data.max || 120

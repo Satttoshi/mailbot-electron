@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 export const useIPCEvents = () => {
   const setMessageLog = useStore((state) => state.setMessageLog)
   const contentText = useStore((state) => state.contentText)
-  const runMailer = () => window.electron.ipcRenderer.send('run-mailer')
+  const runMailer = () => window.electron.ipcRenderer.send('run-mailer', 0)
   const writeMailContentToTxt = () => window.electron.ipcRenderer.send('save-data', contentText)
 
   useEffect(() => {

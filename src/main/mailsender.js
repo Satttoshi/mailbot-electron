@@ -60,11 +60,11 @@ function delay(time) {
 // Define the email options
 let mailOptions = {}
 
-async function changeMailOptions(mail) {
+async function changeMailOptions(mail, selectedMailIndex) {
   const config = await useConfig()
   const txt = fs.readFileSync(contentFilePath, 'utf-8')
   mailOptions = {
-    from: config.mailsender,
+    from: config.mailcredentials[selectedMailIndex].email,
     to: mail,
     subject: title,
     text: txt
@@ -72,14 +72,14 @@ async function changeMailOptions(mail) {
 }
 
 // Send the email
-async function mailSender() {
+async function mailSender(selectedMailIndex) {
   const config = await useConfig()
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: config.mailsender,
-      pass: config.mailpassword
+      user: config.mailcredentials[selectedMailIndex].email,
+      pass: config.mailcredentials[selectedMailIndex].password
     }
   })
   // send mail with defined transport object
@@ -128,7 +128,7 @@ function removeDuplicates(arr) {
 }
 
 //Main
-async function main(log) {
+async function main(log, selectedMailIndex) {
   const config = await useConfig()
   if (!config) {
     log('No config found')
@@ -141,13 +141,9 @@ async function main(log) {
 
   //Add Timestamps, update Mail configs
   for (let i = 0; i < dedupedArr.length; i++) {
-    await changeMailOptions(dedupedArr[i])
-    await mailSender()
+    await changeMailOptions(dedupedArr[i], selectedMailIndex)
+    await mailSender(selectedMailIndex)
     log(`Send to: ${dedupedArr[i]} Index: ${i + 1}`)
-    for (let j = 0; j < 10; j++) {
-      await delay(100)
-      log('Sending...')
-    }
     if (i + 1 < dedupedArr.length) {
       await delay(Math.floor(Math.random() * (max - min) + min))
     }
@@ -156,14 +152,14 @@ async function main(log) {
   log('No more EMAILS! Pypenschuch, Bot ist fertig :)')
 }
 
-export function startMailsender(event) {
+export function startMailsender(event, selectedMailIndex) {
   function log(message) {
     console.log(message)
     event.sender.send('message', message)
   }
 
   log('Mailsender started')
-  main(log)
+  main(log, selectedMailIndex)
     .then(() => {
       log('Mailsender finished')
     })
