@@ -32,6 +32,7 @@
     "dotenv": "^16.4.5",
     "google-spreadsheet": "^3.3.0",
     "nodemailer": "^6.9.13",
+    "react-toastify": "^10.0.5",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
