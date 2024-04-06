@@ -3,7 +3,7 @@ import { useStore } from './hooks/useStore'
 import { useIPCEvents } from './hooks/useIPCEvents'
 
 function App() {
-  const { ipcHandle } = useIPCEvents()
+  const { runMailer, writeMailContentToTxt } = useIPCEvents()
   const messageLog = useStore((state) => state.messageLog)
 
   return (
@@ -11,9 +11,15 @@ function App() {
       <div className="actions">
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={ipcHandle}
+          onClick={runMailer}
         >
-          handle IPC
+          run mailer
+        </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => writeMailContentToTxt('Hello from the renderer')}
+        >
+          write txt
         </button>
       </div>
       <div className="flex flex-col items-center">

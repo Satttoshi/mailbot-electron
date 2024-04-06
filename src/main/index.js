@@ -3,6 +3,8 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { startMailsender } from './mailsender'
+import fs from 'fs'
+import path from 'path'
 
 function createWindow() {
   // Create the browser window.
@@ -52,6 +54,19 @@ app.whenReady().then(() => {
 
   // IPC
   ipcMain.on('run-mailer', (event) => startMailsender(event))
+  ipcMain.on('save-data', (event, data) => {
+    const FILENAME = 'myFile'
+    const appRootPath = app.getAppPath()
+    const filePath = path.join(appRootPath, 'resources', `${FILENAME}.txt`)
+    console.log('Saving data to', filePath)
+    fs.writeFile(filePath, data, (err) => {
+      if (err) {
+        console.error('Failed to save data', err)
+        return
+      }
+      console.log('Data saved successfully.')
+    })
+  })
 
   createWindow()
 
