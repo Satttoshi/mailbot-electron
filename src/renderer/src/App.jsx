@@ -1,12 +1,11 @@
 import Versions from './components/Versions'
-import { useStore } from './hooks/useStore'
 import { useIPCEvents } from './hooks/useIPCEvents'
 import Textarea from './components/Textarea'
 import ConsoleTextarea from './components/ConsoleTextarea'
+import Settings from './components/Settings'
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents()
-  const messageLog = useStore((state) => state.messageLog)
 
   return (
     <>
@@ -26,6 +25,7 @@ function App() {
       </div>
       <Textarea />
       <ConsoleTextarea />
+      <Settings />
       <Versions></Versions>
     </>
   )
