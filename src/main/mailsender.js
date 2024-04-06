@@ -14,9 +14,6 @@ const doc = new GoogleSpreadsheet(process.env.spreadsheet_id)
 const mailsender = process.env.mailsender
 const mailpassword = process.env.mailpassword
 
-// Mail content
-const txt = fs.readFileSync(`resources/${fileConfig.contentFileName}.txt`, 'utf-8')
-
 // Mail Title
 const title = 'Photo and video editing services!'
 
@@ -41,6 +38,8 @@ let mailOptions = {}
 
 function changeMailOptions(mail) {
   return new Promise(function (resolve) {
+    // Mail content
+    const txt = fs.readFileSync(`resources/${fileConfig.contentFileName}.txt`, 'utf-8')
     mailOptions = {
       from: mailsender,
       to: mail,
