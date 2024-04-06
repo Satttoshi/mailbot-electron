@@ -7,7 +7,7 @@ function Textarea() {
 
   useEffect(() => {
     const fetchFileContent = async () => {
-      const fileContent = await window.api.readFile()
+      const fileContent = await window.api.readContentFile()
       setContentText(fileContent)
     }
 
