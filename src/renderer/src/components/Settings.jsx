@@ -130,11 +130,12 @@ function Settings() {
           />
         </div>
 
+        <label className="block text-gray-700 text-sm font-bold mb-2">Sender Emails</label>
         {formData.mailcredentials.map((credential, index) => (
           <div key={index} className="mb-4">
             <div className="flex gap-4 mb-2">
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-32 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
                 placeholder="Name"
                 value={credential.name}
@@ -154,15 +155,15 @@ function Settings() {
                 value={credential.password}
                 onChange={(e) => handleMailCredentialsChange(index, 'password', e.target.value)}
               />
-            </div>
-            <div className="flex justify-end">
-              <button
-                type="button"
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline"
-                onClick={() => removeMailCredential(index)}
-              >
-                Remove
-              </button>
+              <div className="flex">
+                <button
+                  type="button"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold w-24 py-1 px-3 rounded focus:outline-none focus:shadow-outline"
+                  onClick={() => removeMailCredential(index)}
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -173,7 +174,7 @@ function Settings() {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             onClick={addMailCredential}
           >
-            Add Another Credential
+            Add Another Email
           </button>
         </div>
         <div className="mb-4 flex gap-4">
