@@ -13,7 +13,7 @@ const mailsender = process.env.mailsender
 const mailpassword = process.env.mailpassword
 
 // Mail content
-const txt = fs.readFileSync('content.txt', 'utf-8')
+const txt = fs.readFileSync('resources/content.txt', 'utf-8')
 
 // Mail Title
 const title = 'Photo and video editing services!'
