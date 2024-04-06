@@ -1,6 +1,7 @@
 import Versions from './components/Versions'
 import { useStore } from './hooks/useStore'
 import { useIPCEvents } from './hooks/useIPCEvents'
+import Textarea from './components/Textarea'
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents()
@@ -27,6 +28,7 @@ function App() {
           <span key={index}>{dataItem}</span>
         ))}
       </div>
+      <Textarea />
       <Versions></Versions>
     </>
   )

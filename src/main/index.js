@@ -5,6 +5,7 @@ import icon from '../../resources/icon.png?asset'
 import { startMailsender } from './mailsender'
 import fs from 'fs'
 import path from 'path'
+import fileConfig from '../../file.config'
 
 function createWindow() {
   // Create the browser window.
@@ -55,9 +56,8 @@ app.whenReady().then(() => {
   // IPC
   ipcMain.on('run-mailer', (event) => startMailsender(event))
   ipcMain.on('save-data', (event, data) => {
-    const FILENAME = 'myFile'
     const appRootPath = app.getAppPath()
-    const filePath = path.join(appRootPath, 'resources', `${FILENAME}.txt`)
+    const filePath = path.join(appRootPath, 'resources', `${fileConfig.contentFileName}.txt`)
     console.log('Saving data to', filePath)
     fs.writeFile(filePath, data, (err) => {
       if (err) {
@@ -66,6 +66,9 @@ app.whenReady().then(() => {
       }
       console.log('Data saved successfully.')
     })
+  })
+  ipcMain.handle('get-app-path', async (event) => {
+    return app.getAppPath()
   })
 
   createWindow()
