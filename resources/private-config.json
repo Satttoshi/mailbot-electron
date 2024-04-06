@@ -1,0 +1,8 @@
+{
+  "spreadsheet_id": "insert spreadsheet id",
+  "credentials": "insert credentials",
+  "mailsender": "insert gmail address",
+  "mailpassword": "insert gmail app-password",
+  "min": 20,
+  "max": 120
+}
