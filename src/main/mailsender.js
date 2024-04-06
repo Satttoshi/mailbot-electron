@@ -72,24 +72,34 @@ async function changeMailOptions(mail, selectedMailIndex) {
 }
 
 // Send the email
-async function mailSender(selectedMailIndex) {
-  const config = await useConfig()
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: config.mailcredentials[selectedMailIndex].email,
-      pass: config.mailcredentials[selectedMailIndex].password
-    }
-  })
-  // send mail with defined transport object
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error)
-    } else {
-      console.log(`${mailOptions.to} ${info.response}\n`)
-    }
-  })
+async function mailSender(log, selectedMailIndex) {
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const config = await useConfig()
+    // Create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: config.mailcredentials[selectedMailIndex].email,
+        pass: config.mailcredentials[selectedMailIndex].password
+      }
+    })
+
+    return await new Promise((resolve, reject) => {
+      // Send mail with defined transport object
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          reject(error)
+        } else {
+          // log(`${mailOptions.to} ${info.response}\n`)
+          resolve(info)
+        }
+      })
+    }) // Return info for further processing, if necessary
+  } catch (error) {
+    // we rethrow the error out of the callback
+    throw error
+  }
 }
 
 // Load sheets in array
@@ -139,14 +149,26 @@ async function main(log, selectedMailIndex) {
   const result = await updateSheet(log)
   console.log(result)
 
+  let isError = false
+
   //Add Timestamps, update Mail configs
   for (let i = 0; i < dedupedArr.length; i++) {
     await changeMailOptions(dedupedArr[i], selectedMailIndex)
-    // await mailSender(selectedMailIndex)
-    log(`Send to: ${dedupedArr[i]} Index: ${i + 1}`)
+    try {
+      await mailSender(log, selectedMailIndex)
+    } catch (error) {
+      log(error)
+      isError = true
+      break
+    }
+    log(`Send mail to: ${dedupedArr[i]} Index: ${i + 1}`)
     if (i + 1 < dedupedArr.length) {
       await delay(Math.floor(Math.random() * (max - min) + min))
     }
+  }
+  if (isError) {
+    log('Bot stopped due to error')
+    return
   }
   await delay(2000)
   log('No more EMAILS! Pypenschuch, Bot ist fertig :)')
