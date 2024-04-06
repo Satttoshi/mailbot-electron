@@ -2,7 +2,6 @@ import { useStore } from '../hooks/useStore'
 
 const Selector = () => {
   const mailNames = useStore((state) => state.mailNames)
-
   const selectedIndex = useStore((state) => state.selectedIndex)
   const setSelectedIndex = useStore((state) => state.setSelectedIndex)
 

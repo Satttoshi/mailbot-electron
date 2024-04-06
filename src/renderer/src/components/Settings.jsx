@@ -10,6 +10,7 @@ function Settings() {
     max: ''
   })
 
+  const runToast = useStore((state) => state.runToast)
   const setMailNames = useStore((state) => state.setMailNames)
 
   useEffect(() => {
@@ -73,6 +74,7 @@ function Settings() {
     window.electron.ipcRenderer.send('save-private-config-json', formData)
     console.log('Form data submitted:', formData)
     setMailNames(formData.mailcredentials.map((credential) => credential.name))
+    runToast('Settings updated!')
   }
 
   return (

@@ -12,21 +12,23 @@ function App() {
   const selectedIndex = useStore((state) => state.selectedIndex)
 
   return (
-    <div className="bg-fuchsia-300 p-2">
-      <div className="flex flex-col items-center justify-center p-4">
-        <button
-          className="bg-green-500 hover:bg-green-700 text-neutral-900 font-bold py-2 px-4 rounded"
-          onClick={() => runMailer(selectedIndex)}
-        >
-          Start Mailbot
-        </button>
+    <div className="bg-fuchsia-300 p-2 flex justify-center">
+      <div className="max-w-3xl">
+        <div className="flex flex-col items-center justify-center p-4">
+          <button
+            className="bg-green-500 hover:bg-green-700 text-neutral-900 font-bold py-2 px-4 rounded"
+            onClick={() => runMailer(selectedIndex)}
+          >
+            Start Mailbot
+          </button>
+        </div>
+        <Selector />
+        <Textarea onSave={writeMailContentToTxt} />
+        <ConsoleTextarea />
+        <Settings />
+        <Versions></Versions>
+        <Toast />
       </div>
-      <Selector />
-      <Textarea onSave={writeMailContentToTxt} />
-      <ConsoleTextarea />
-      <Settings />
-      <Versions></Versions>
-      <Toast />
     </div>
   )
 }
