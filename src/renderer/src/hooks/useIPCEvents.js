@@ -4,8 +4,17 @@ import { useEffect } from 'react'
 export const useIPCEvents = () => {
   const setMessageLog = useStore((state) => state.setMessageLog)
   const contentText = useStore((state) => state.contentText)
-  const runMailer = () => window.electron.ipcRenderer.send('run-mailer', 0)
-  const writeMailContentToTxt = () => window.electron.ipcRenderer.send('save-data', contentText)
+  const runToast = useStore((state) => state.runToast)
+
+  const runMailer = (mailIndex) => {
+    window.electron.ipcRenderer.send('run-mailer', mailIndex)
+    runToast('Bot started!')
+  }
+
+  const writeMailContentToTxt = () => {
+    window.electron.ipcRenderer.send('save-data', contentText)
+    runToast('Mail content saved!')
+  }
 
   useEffect(() => {
     const handleMessage = (event, arg) => {
