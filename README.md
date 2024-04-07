@@ -1,6 +1,6 @@
 # mailbot-electron
 
-An Electron application with React
+An Electron application with React.
 Send emails in a human interval based on a gsheet list
 
 ## Project Setup
