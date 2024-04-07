@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: sales-mails-electron
+productName: mailbot-electron
 directories:
   buildResources: build
 files:
@@ -11,7 +11,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: sales-mails-electron
+  executableName: mailbot-electron
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}

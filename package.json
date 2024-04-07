@@ -1,7 +1,7 @@
 {
-  "name": "sales-mails-electron",
-  "version": "1.0.0",
-  "description": "An Electron application with React",
+  "name": "mailbot-electron",
+  "version": "1.0.1",
+  "description": "Send emails based on a gsheet list",
   "main": "./out/main/index.js",
   "author": "js",
   "homepage": "https://electron-vite.org",
