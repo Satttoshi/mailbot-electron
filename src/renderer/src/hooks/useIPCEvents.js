@@ -6,8 +6,8 @@ export const useIPCEvents = () => {
   const contentText = useStore((state) => state.contentText)
   const runToast = useStore((state) => state.runToast)
 
-  const runMailer = ({ mailIndex, shouldShutdown }) => {
-    window.electron.ipcRenderer.send('run-mailer', { mailIndex, shouldShutdown })
+  const runMailer = ({ selectedMailIndex, shouldShutdown }) => {
+    window.electron.ipcRenderer.send('run-mailer', { selectedMailIndex, shouldShutdown })
     runToast('Bot started!')
   }
 

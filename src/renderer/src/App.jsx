@@ -10,7 +10,7 @@ import ShutdownToggle from './components/ShutdownToggle'
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents()
-  const selectedIndex = useStore((state) => state.selectedIndex)
+  const selectedMailIndex = useStore((state) => state.selectedMailIndex)
   const shouldShutdown = useStore((state) => state.shouldShutdown)
 
   return (
@@ -19,7 +19,7 @@ function App() {
         <div className="flex flex-col items-center justify-center p-4">
           <button
             className="bg-green-500 hover:bg-green-700 text-neutral-900 font-bold py-2 px-4 rounded"
-            onClick={() => runMailer({ selectedIndex, shouldShutdown })}
+            onClick={() => runMailer({ selectedMailIndex, shouldShutdown })}
           >
             Start Mailbot
           </button>

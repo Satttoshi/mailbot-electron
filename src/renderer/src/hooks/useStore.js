@@ -16,10 +16,10 @@ export const useStore = create((set) => ({
 
   mailNames: [],
   setMailNames: (mailNames) => set({ mailNames }),
-  selectedIndex: localStorage.getItem('selectedIndex') || 0,
-  setSelectedIndex: (index) => {
-    localStorage.setItem('selectedIndex', index)
-    set({ selectedIndex: index })
+  selectedMailIndex: localStorage.getItem('selectedMailIndex') || 0,
+  setSelectedMailIndex: (index) => {
+    localStorage.setItem('selectedMailIndex', index)
+    set({ selectedMailIndex: index })
   },
 
   shouldShutdown: false,
