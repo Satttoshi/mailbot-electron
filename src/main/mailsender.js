@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer'
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 import fs from 'fs'
+import { shutdownComputer } from './shutdown'
 
 import { contentFilePath, privateConfigFilePath } from './utils/file-paths'
 
@@ -138,7 +139,7 @@ function removeDuplicates(arr) {
 }
 
 //Main
-async function main(log, selectedMailIndex) {
+async function main(log, selectedMailIndex, shouldShutdown) {
   const config = await useConfig()
   if (!config) {
     log('No config found')
@@ -172,16 +173,22 @@ async function main(log, selectedMailIndex) {
   }
   await delay(2000)
   log('No more EMAILS! Pypenschuch, Bot ist fertig :)')
+
+  if (shouldShutdown) {
+    await delay(5000)
+    log('Gute Nacht! Shutting down...')
+    shutdownComputer(log)
+  }
 }
 
-export function startMailsender(event, selectedMailIndex) {
+export function startMailsender(event, selectedMailIndex, shouldShutdown) {
   function log(message) {
     console.log(message)
     event.sender.send('message', message)
   }
 
   log('Mailsender started')
-  main(log, selectedMailIndex)
+  main(log, selectedMailIndex, shouldShutdown)
     .then(() => {
       log('Mailsender finished')
     })

@@ -20,5 +20,8 @@ export const useStore = create((set) => ({
   setSelectedIndex: (index) => {
     localStorage.setItem('selectedIndex', index)
     set({ selectedIndex: index })
-  }
+  },
+
+  shouldShutdown: false,
+  toggleShouldShutdown: () => set((state) => ({ shouldShutdown: !state.shouldShutdown }))
 }))

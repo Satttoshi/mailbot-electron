@@ -6,10 +6,12 @@ import Settings from './components/Settings'
 import Toast from './components/Toast'
 import Selector from './components/Selector'
 import { useStore } from './hooks/useStore'
+import ShutdownToggle from './components/ShutdownToggle'
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents()
   const selectedIndex = useStore((state) => state.selectedIndex)
+  const shouldShutdown = useStore((state) => state.shouldShutdown)
 
   return (
     <div className="bg-fuchsia-300 p-2 flex justify-center">
@@ -17,12 +19,13 @@ function App() {
         <div className="flex flex-col items-center justify-center p-4">
           <button
             className="bg-green-500 hover:bg-green-700 text-neutral-900 font-bold py-2 px-4 rounded"
-            onClick={() => runMailer(selectedIndex)}
+            onClick={() => runMailer({ selectedIndex, shouldShutdown })}
           >
             Start Mailbot
           </button>
         </div>
         <Selector />
+        <ShutdownToggle shouldShutdown={shouldShutdown} />
         <Textarea onSave={writeMailContentToTxt} />
         <ConsoleTextarea />
         <Settings />
