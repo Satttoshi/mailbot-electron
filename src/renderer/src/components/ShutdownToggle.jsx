@@ -10,8 +10,8 @@ const ShutdownToggle = ({ shouldShutdown }) => {
         <button
           onClick={toggleShouldShutdown}
           className={`${
-            shouldShutdown ? 'bg-blue-500' : 'bg-gray-300'
-          } ml-4 relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
+            shouldShutdown ? 'bg-blue-500' : 'bg-neutral-800'
+          } ml-4 relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50`}
         >
           <span
             className={`${
