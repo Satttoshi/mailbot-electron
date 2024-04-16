@@ -1,6 +1,6 @@
 {
   "name": "mailbot-electron",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Send emails based on a gsheet list",
   "main": "./out/main/index.js",
   "author": "js",
