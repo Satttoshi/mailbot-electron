@@ -12,6 +12,7 @@ function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents();
   const selectedMailIndex = useStore((state) => state.selectedMailIndex);
   const shouldShutdown = useStore((state) => state.shouldShutdown);
+  const mailTitle = useStore((state) => state.mailTitle);
 
   return (
     <div className="bg-fuchsia-300 p-2 flex justify-center">
@@ -19,7 +20,7 @@ function App() {
         <div className="flex flex-col items-center justify-center p-4">
           <button
             className="bg-green-500 hover:bg-green-700 text-neutral-900 font-bold py-2 px-4 rounded"
-            onClick={() => runMailer({ selectedMailIndex, shouldShutdown })}
+            onClick={() => runMailer({ selectedMailIndex, shouldShutdown, mailTitle })}
           >
             Start Mailbot
           </button>

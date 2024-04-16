@@ -48,9 +48,6 @@ fs.watchFile(privateConfigFilePath, () => {
   }, 1000);
 });
 
-// Mail Title
-const title = 'Photo and video editing services!';
-
 // Delay function like sleep() in python
 function delay(time) {
   return new Promise(function (resolve) {
@@ -61,18 +58,18 @@ function delay(time) {
 // Define the email options
 let mailOptions = {};
 
-async function changeMailOptions(mail, selectedMailIndex) {
+async function changeMailOptions(mail, selectedMailIndex, mailTitle) {
   const config = await useConfig();
   const content = fs.readFileSync(contentFilePath, 'utf-8');
   console.log(selectedMailIndex);
   const senderEmail = config.mailcredentials[selectedMailIndex].email;
   const senderName = config.mailcredentials[selectedMailIndex].name;
   const contentWithResolvedVariables = content.replace(/%NAME%/gi, senderName);
-  console.log('Sender Email:', senderEmail, 'Sender Name:', senderName);
+  console.log('Sender Email:', senderEmail, 'Sender Name:', senderName, 'Mail Title:', mailTitle);
   mailOptions = {
     from: senderEmail,
     to: mail,
-    subject: title,
+    subject: mailTitle,
     text: contentWithResolvedVariables
   };
 }
@@ -144,7 +141,7 @@ function removeDuplicates(arr) {
 }
 
 //Main
-async function main(log, selectedMailIndex, shouldShutdown) {
+async function main(log, selectedMailIndex, shouldShutdown, mailTitle) {
   const config = await useConfig();
   if (!config) {
     log('No config found');
@@ -159,7 +156,7 @@ async function main(log, selectedMailIndex, shouldShutdown) {
 
   //Add Timestamps, update Mail configs
   for (let i = 0; i < dedupedArr.length; i++) {
-    await changeMailOptions(dedupedArr[i], selectedMailIndex);
+    await changeMailOptions(dedupedArr[i], selectedMailIndex, mailTitle);
     try {
       await mailSender(log, selectedMailIndex);
     } catch (error) {
@@ -186,14 +183,14 @@ async function main(log, selectedMailIndex, shouldShutdown) {
   }
 }
 
-export function startMailsender(event, selectedMailIndex, shouldShutdown) {
+export function startMailsender(event, selectedMailIndex, shouldShutdown, mailTitle) {
   function log(message) {
     console.log(message);
     event.sender.send('message', message);
   }
 
   log('Mailsender started');
-  main(log, selectedMailIndex, shouldShutdown)
+  main(log, selectedMailIndex, shouldShutdown, mailTitle)
     .then(() => {
       log('Mailsender finished');
     })

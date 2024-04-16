@@ -55,8 +55,8 @@ app.whenReady().then(() => {
   });
 
   // IPC
-  ipcMain.on('run-mailer', (event, { selectedMailIndex, shouldShutdown }) =>
-    startMailsender(event, selectedMailIndex, shouldShutdown)
+  ipcMain.on('run-mailer', (event, { selectedMailIndex, shouldShutdown, mailTitle }) =>
+    startMailsender(event, selectedMailIndex, shouldShutdown, mailTitle)
   );
 
   ipcMain.on('save-data', (event, data) => {
