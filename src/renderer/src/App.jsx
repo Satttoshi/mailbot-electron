@@ -1,17 +1,17 @@
-import Versions from './components/Versions'
-import { useIPCEvents } from './hooks/useIPCEvents'
-import Textarea from './components/Textarea'
-import ConsoleTextarea from './components/ConsoleTextarea'
-import Settings from './components/Settings'
-import Toast from './components/Toast'
-import Selector from './components/Selector'
-import { useStore } from './hooks/useStore'
-import ShutdownToggle from './components/ShutdownToggle'
+import Versions from './components/Versions';
+import { useIPCEvents } from './hooks/useIPCEvents';
+import Textarea from './components/Textarea';
+import ConsoleTextarea from './components/ConsoleTextarea';
+import Settings from './components/Settings';
+import Toast from './components/Toast';
+import Selector from './components/Selector';
+import { useStore } from './hooks/useStore';
+import ShutdownToggle from './components/ShutdownToggle';
 
 function App() {
-  const { runMailer, writeMailContentToTxt } = useIPCEvents()
-  const selectedMailIndex = useStore((state) => state.selectedMailIndex)
-  const shouldShutdown = useStore((state) => state.shouldShutdown)
+  const { runMailer, writeMailContentToTxt } = useIPCEvents();
+  const selectedMailIndex = useStore((state) => state.selectedMailIndex);
+  const shouldShutdown = useStore((state) => state.shouldShutdown);
 
   return (
     <div className="bg-fuchsia-300 p-2 flex justify-center">
@@ -33,7 +33,7 @@ function App() {
         <Toast />
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

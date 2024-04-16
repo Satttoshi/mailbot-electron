@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { useStore } from '../hooks/useStore'
+import { useEffect, useState } from 'react';
+import { useStore } from '../hooks/useStore';
 
 function Settings() {
   const [formData, setFormData] = useState({
@@ -8,74 +8,74 @@ function Settings() {
     mailcredentials: [{ name: '', email: '', password: '' }],
     min: '',
     max: ''
-  })
+  });
 
-  const runToast = useStore((state) => state.runToast)
-  const setMailNames = useStore((state) => state.setMailNames)
+  const runToast = useStore((state) => state.runToast);
+  const setMailNames = useStore((state) => state.setMailNames);
 
   useEffect(() => {
     const fetchPrivateConfigJson = async () => {
-      const privateConfigJsonString = await window.api.readPrivateConfigFile()
+      const privateConfigJsonString = await window.api.readPrivateConfigFile();
       if (privateConfigJsonString) {
         try {
           // Parse the JSON string into an object
-          const configObject = JSON.parse(privateConfigJsonString)
+          const configObject = JSON.parse(privateConfigJsonString);
           // Ensure that the 'credentials' property is kept as a JSON string for your form
           // If 'credentials' is an object, stringify it; otherwise, use it as is or default to an empty string
           const credentials =
             typeof configObject.credentials === 'object'
               ? JSON.stringify(configObject.credentials, null, 2)
-              : configObject.credentials || ''
+              : configObject.credentials || '';
           // Update the form data, ensuring credentials is a string
-          setFormData({ ...configObject, credentials })
+          setFormData({ ...configObject, credentials });
           // Update the mail names in the global store
-          setMailNames(configObject.mailcredentials.map((credential) => credential.name))
+          setMailNames(configObject.mailcredentials.map((credential) => credential.name));
         } catch (error) {
-          console.error('Error parsing the private config JSON:', error)
+          console.error('Error parsing the private config JSON:', error);
         }
       } else {
-        console.error("No config found or the config couldn't be read.")
+        console.error("No config found or the config couldn't be read.");
       }
-    }
+    };
 
-    fetchPrivateConfigJson().catch(console.error)
-  }, [])
+    fetchPrivateConfigJson().catch(console.error);
+  }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
       [name]: value
-    }))
-  }
+    }));
+  };
 
   const handleMailCredentialsChange = (index, field, value) => {
     const updatedMailCredentials = formData.mailcredentials.map((credential, i) => {
       if (i === index) {
-        return { ...credential, [field]: value }
+        return { ...credential, [field]: value };
       }
-      return credential
-    })
-    setFormData({ ...formData, mailcredentials: updatedMailCredentials })
-  }
+      return credential;
+    });
+    setFormData({ ...formData, mailcredentials: updatedMailCredentials });
+  };
 
   const addMailCredential = () => {
-    const newCredential = { name: '', email: '', password: '' }
-    setFormData({ ...formData, mailcredentials: [...formData.mailcredentials, newCredential] })
-  }
+    const newCredential = { name: '', email: '', password: '' };
+    setFormData({ ...formData, mailcredentials: [...formData.mailcredentials, newCredential] });
+  };
 
   const removeMailCredential = (index) => {
-    const filteredCredentials = formData.mailcredentials.filter((_, i) => i !== index)
-    setFormData({ ...formData, mailcredentials: filteredCredentials })
-  }
+    const filteredCredentials = formData.mailcredentials.filter((_, i) => i !== index);
+    setFormData({ ...formData, mailcredentials: filteredCredentials });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    window.electron.ipcRenderer.send('save-private-config-json', formData)
-    console.log('Form data submitted:', formData)
-    setMailNames(formData.mailcredentials.map((credential) => credential.name))
-    runToast('Settings updated!')
-  }
+    e.preventDefault();
+    window.electron.ipcRenderer.send('save-private-config-json', formData);
+    console.log('Form data submitted:', formData);
+    setMailNames(formData.mailcredentials.map((credential) => credential.name));
+    runToast('Settings updated!');
+  };
 
   return (
     <div className="flex flex-col items-center justify-center mt-4">
@@ -198,7 +198,7 @@ function Settings() {
         </div>
       </form>
     </div>
-  )
+  );
 }
 
-export default Settings
+export default Settings;

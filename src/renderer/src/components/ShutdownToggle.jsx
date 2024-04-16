@@ -1,7 +1,7 @@
-import { useStore } from '../hooks/useStore'
+import { useStore } from '../hooks/useStore';
 
 const ShutdownToggle = ({ shouldShutdown }) => {
-  const toggleShouldShutdown = useStore((state) => state.toggleShouldShutdown)
+  const toggleShouldShutdown = useStore((state) => state.toggleShouldShutdown);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -21,7 +21,7 @@ const ShutdownToggle = ({ shouldShutdown }) => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ShutdownToggle
+export default ShutdownToggle;

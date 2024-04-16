@@ -1,21 +1,21 @@
-import { useEffect } from 'react'
-import { useStore } from '../hooks/useStore'
+import { useEffect } from 'react';
+import { useStore } from '../hooks/useStore';
 
 function Textarea({ onSave }) {
-  const contentText = useStore((state) => state.contentText)
-  const setContentText = useStore((state) => state.setContentText)
+  const contentText = useStore((state) => state.contentText);
+  const setContentText = useStore((state) => state.setContentText);
 
   useEffect(() => {
     const fetchFileContent = async () => {
-      const fileContent = await window.api.readContentFile()
-      setContentText(fileContent)
-    }
+      const fileContent = await window.api.readContentFile();
+      setContentText(fileContent);
+    };
 
-    fetchFileContent().catch(console.error)
-  }, [])
+    fetchFileContent().catch(console.error);
+  }, []);
 
   function handleChange(event) {
-    setContentText(event.target.value)
+    setContentText(event.target.value);
   }
 
   return (
@@ -35,7 +35,7 @@ function Textarea({ onSave }) {
         </button>
       </div>
     </>
-  )
+  );
 }
 
-export default Textarea
+export default Textarea;

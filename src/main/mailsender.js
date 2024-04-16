@@ -1,87 +1,87 @@
-import nodemailer from 'nodemailer'
-import { GoogleSpreadsheet } from 'google-spreadsheet'
-import fs from 'fs'
-import { shutdownComputer } from './shutdown'
+import nodemailer from 'nodemailer';
+import { GoogleSpreadsheet } from 'google-spreadsheet';
+import fs from 'fs';
+import { shutdownComputer } from './shutdown';
 
-import { contentFilePath, privateConfigFilePath } from './utils/file-paths'
+import { contentFilePath, privateConfigFilePath } from './utils/file-paths';
 
 // Read private-config.json file on demand
 function readConfig() {
   return new Promise((resolve, reject) => {
     fs.readFile(privateConfigFilePath, 'utf-8', (err, data) => {
       if (err) {
-        reject(err)
+        reject(err);
       } else {
         try {
-          const config = JSON.parse(data)
-          resolve(config)
+          const config = JSON.parse(data);
+          resolve(config);
         } catch (parseError) {
-          reject(parseError)
+          reject(parseError);
         }
       }
-    })
-  })
+    });
+  });
 }
 
 // load the config file
 async function useConfig() {
   try {
-    return await readConfig()
+    return await readConfig();
   } catch (error) {
-    console.error('Failed to read or parse the config file:', error)
-    return null
+    console.error('Failed to read or parse the config file:', error);
+    return null;
   }
 }
 
 // Watch the config file for changes, to always use the latest config in runtime
 fs.watchFile(privateConfigFilePath, () => {
-  console.log('Config file updated. Reloading...')
+  console.log('Config file updated. Reloading...');
   // Debounce the reload
   setTimeout(() => {
     useConfig()
       .then((config) => {
         if (config) {
-          console.log('Config reloaded')
+          console.log('Config reloaded');
         }
       })
-      .catch((err) => console.error('Failed to reload config:', err))
-  }, 1000)
-})
+      .catch((err) => console.error('Failed to reload config:', err));
+  }, 1000);
+});
 
 // Mail Title
-const title = 'Photo and video editing services!'
+const title = 'Photo and video editing services!';
 
 // Delay function like sleep() in python
 function delay(time) {
   return new Promise(function (resolve) {
-    setTimeout(resolve, time)
-  })
+    setTimeout(resolve, time);
+  });
 }
 
 // Define the email options
-let mailOptions = {}
+let mailOptions = {};
 
 async function changeMailOptions(mail, selectedMailIndex) {
-  const config = await useConfig()
-  const content = fs.readFileSync(contentFilePath, 'utf-8')
-  console.log(selectedMailIndex)
-  const senderEmail = config.mailcredentials[selectedMailIndex].email
-  const senderName = config.mailcredentials[selectedMailIndex].name
-  const contentWithResolvedVariables = content.replace(/%NAME%/gi, senderName)
-  console.log('Sender Email:', senderEmail, 'Sender Name:', senderName)
+  const config = await useConfig();
+  const content = fs.readFileSync(contentFilePath, 'utf-8');
+  console.log(selectedMailIndex);
+  const senderEmail = config.mailcredentials[selectedMailIndex].email;
+  const senderName = config.mailcredentials[selectedMailIndex].name;
+  const contentWithResolvedVariables = content.replace(/%NAME%/gi, senderName);
+  console.log('Sender Email:', senderEmail, 'Sender Name:', senderName);
   mailOptions = {
     from: senderEmail,
     to: mail,
     subject: title,
     text: contentWithResolvedVariables
-  }
+  };
 }
 
 // Send the email
 async function mailSender(log, selectedMailIndex) {
   // eslint-disable-next-line no-useless-catch
   try {
-    const config = await useConfig()
+    const config = await useConfig();
     // Create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -89,116 +89,116 @@ async function mailSender(log, selectedMailIndex) {
         user: config.mailcredentials[selectedMailIndex].email,
         pass: config.mailcredentials[selectedMailIndex].password
       }
-    })
+    });
 
     return await new Promise((resolve, reject) => {
       // Send mail with defined transport object
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          reject(error)
+          reject(error);
         } else {
           // log(`${mailOptions.to} ${info.response}\n`)
-          resolve(info)
+          resolve(info);
         }
-      })
-    }) // Return info for further processing, if necessary
+      });
+    }); // Return info for further processing, if necessary
   } catch (error) {
     // we rethrow the error out of the callback
-    throw error
+    throw error;
   }
 }
 
 // Load sheets in array
-const currentSheet = []
-let dedupedArr = []
+const currentSheet = [];
+let dedupedArr = [];
 
 // bring sheet row into array "currentSheet"
 async function updateSheet(log) {
-  const config = await useConfig()
-  const doc = new GoogleSpreadsheet(config.spreadsheet_id)
+  const config = await useConfig();
+  const doc = new GoogleSpreadsheet(config.spreadsheet_id);
 
-  await doc.useServiceAccountAuth(config.credentials)
-  await doc.loadInfo()
-  const sheet = doc.sheetsByIndex[0]
-  const rows = await sheet.getRows()
-  currentSheet.length = 0
+  await doc.useServiceAccountAuth(config.credentials);
+  await doc.loadInfo();
+  const sheet = doc.sheetsByIndex[0];
+  const rows = await sheet.getRows();
+  currentSheet.length = 0;
   // Imports sheet to array based on current row count
   for (let i = 0; i < rows.length; i++) {
-    currentSheet.push(rows[i].Email)
+    currentSheet.push(rows[i].Email);
   }
   // Remove duplicates
-  dedupedArr = removeDuplicates(currentSheet)
-  log(dedupedArr)
-  log('Completed removing duplicates from current sheet')
-  return 'Completed loading current sheet with ' + dedupedArr.length + ' entries mulaa\n'
+  dedupedArr = removeDuplicates(currentSheet);
+  log(dedupedArr);
+  log('Completed removing duplicates from current sheet');
+  return 'Completed loading current sheet with ' + dedupedArr.length + ' entries mulaa\n';
 }
 
 // remove Duplicates from array
 function removeDuplicates(arr) {
   return Object.keys(
     arr.reduce((acc, curr) => {
-      acc[curr] = true
-      return acc
+      acc[curr] = true;
+      return acc;
     }, {})
-  )
+  );
 }
 
 //Main
 async function main(log, selectedMailIndex, shouldShutdown) {
-  const config = await useConfig()
+  const config = await useConfig();
   if (!config) {
-    log('No config found')
-    return
+    log('No config found');
+    return;
   }
-  const min = config.min * 1000
-  const max = config.max * 1000
-  const result = await updateSheet(log)
-  console.log(result)
+  const min = config.min * 1000;
+  const max = config.max * 1000;
+  const result = await updateSheet(log);
+  console.log(result);
 
-  let isError = false
+  let isError = false;
 
   //Add Timestamps, update Mail configs
   for (let i = 0; i < dedupedArr.length; i++) {
-    await changeMailOptions(dedupedArr[i], selectedMailIndex)
+    await changeMailOptions(dedupedArr[i], selectedMailIndex);
     try {
-      await mailSender(log, selectedMailIndex)
+      await mailSender(log, selectedMailIndex);
     } catch (error) {
-      log(error)
-      isError = true
-      break
+      log(error);
+      isError = true;
+      break;
     }
-    log(`Send mail to: ${dedupedArr[i]} Index: ${i + 1}`)
+    log(`Send mail to: ${dedupedArr[i]} Index: ${i + 1}`);
     if (i + 1 < dedupedArr.length) {
-      await delay(Math.floor(Math.random() * (max - min) + min))
+      await delay(Math.floor(Math.random() * (max - min) + min));
     }
   }
   if (isError) {
-    log('Bot stopped due to error')
-    return
+    log('Bot stopped due to error');
+    return;
   }
-  await delay(2000)
-  log('No more EMAILS! Pypenschuch, Bot ist fertig :)')
+  await delay(2000);
+  log('No more EMAILS! Pypenschuch, Bot ist fertig :)');
 
   if (shouldShutdown) {
-    await delay(5000)
-    log('Gute Nacht! Shutting down...')
-    shutdownComputer(log)
+    await delay(5000);
+    log('Gute Nacht! Shutting down...');
+    shutdownComputer(log);
   }
 }
 
 export function startMailsender(event, selectedMailIndex, shouldShutdown) {
   function log(message) {
-    console.log(message)
-    event.sender.send('message', message)
+    console.log(message);
+    event.sender.send('message', message);
   }
 
-  log('Mailsender started')
+  log('Mailsender started');
   main(log, selectedMailIndex, shouldShutdown)
     .then(() => {
-      log('Mailsender finished')
+      log('Mailsender finished');
     })
-    .catch(log)
+    .catch(log);
 }
 
 // Init the config on startup
-useConfig().catch((err) => console.error('Failed to init private-config.json:', err))
+useConfig().catch((err) => console.error('Failed to init private-config.json:', err));

@@ -1,48 +1,48 @@
-import { contextBridge, ipcRenderer } from 'electron'
-import { electronAPI } from '@electron-toolkit/preload'
-import fs from 'fs'
-import path from 'path'
-import fileConfig from '../../file.config'
+import { contextBridge, ipcRenderer } from 'electron';
+import { electronAPI } from '@electron-toolkit/preload';
+import fs from 'fs';
+import path from 'path';
+import fileConfig from '../../file.config';
 
 const readContentFile = async () => {
-  const appPath = await ipcRenderer.invoke('get-app-path')
-  const filePath = path.join(appPath, `resources/${fileConfig.contentFileName}.txt`)
+  const appPath = await ipcRenderer.invoke('get-app-path');
+  const filePath = path.join(appPath, `resources/${fileConfig.contentFileName}.txt`);
   try {
-    return fs.readFileSync(filePath, { encoding: 'utf-8' })
+    return fs.readFileSync(filePath, { encoding: 'utf-8' });
   } catch (error) {
-    console.error('Error reading file:', error)
-    return ''
+    console.error('Error reading file:', error);
+    return '';
   }
-}
+};
 
 const readPrivateConfigFile = async () => {
-  const appPath = await ipcRenderer.invoke('get-app-path')
-  const filePath = path.join(appPath, `resources/${fileConfig.privateConfigFileName}.json`)
+  const appPath = await ipcRenderer.invoke('get-app-path');
+  const filePath = path.join(appPath, `resources/${fileConfig.privateConfigFileName}.json`);
   try {
-    return fs.readFileSync(filePath, { encoding: 'utf-8' })
+    return fs.readFileSync(filePath, { encoding: 'utf-8' });
   } catch (error) {
-    console.error('Error reading file:', error)
-    return ''
+    console.error('Error reading file:', error);
+    return '';
   }
-}
+};
 
 // Custom APIs for renderer
 const api = {
   readContentFile,
   readPrivateConfigFile
-}
+};
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
 // just add to the DOM global.
 if (process.contextIsolated) {
   try {
-    contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('electron', electronAPI);
+    contextBridge.exposeInMainWorld('api', api);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 } else {
-  window.electron = electronAPI
-  window.api = api
+  window.electron = electronAPI;
+  window.api = api;
 }

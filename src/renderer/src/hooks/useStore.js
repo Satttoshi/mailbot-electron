@@ -1,12 +1,12 @@
-import { create } from 'zustand'
-import { toast } from 'react-toastify'
+import { create } from 'zustand';
+import { toast } from 'react-toastify';
 
 export const useStore = create((set) => ({
   messageLog: [],
   setMessageLog: (message) =>
     set((state) => {
-      const timestamp = new Date().toLocaleTimeString()
-      return { messageLog: [...state.messageLog, `[${timestamp}] - ${message}`] }
+      const timestamp = new Date().toLocaleTimeString();
+      return { messageLog: [...state.messageLog, `[${timestamp}] - ${message}`] };
     }),
 
   contentText: '',
@@ -18,10 +18,10 @@ export const useStore = create((set) => ({
   setMailNames: (mailNames) => set({ mailNames }),
   selectedMailIndex: localStorage.getItem('selectedMailIndex') || 0,
   setSelectedMailIndex: (index) => {
-    localStorage.setItem('selectedMailIndex', index)
-    set({ selectedMailIndex: index })
+    localStorage.setItem('selectedMailIndex', index);
+    set({ selectedMailIndex: index });
   },
 
   shouldShutdown: false,
   toggleShouldShutdown: () => set((state) => ({ shouldShutdown: !state.shouldShutdown }))
-}))
+}));

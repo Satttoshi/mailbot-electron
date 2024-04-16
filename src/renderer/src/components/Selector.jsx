@@ -1,9 +1,9 @@
-import { useStore } from '../hooks/useStore'
+import { useStore } from '../hooks/useStore';
 
 const Selector = () => {
-  const mailNames = useStore((state) => state.mailNames)
-  const selectedMailIndex = useStore((state) => state.selectedMailIndex)
-  const setSelectedMailIndex = useStore((state) => state.setSelectedMailIndex)
+  const mailNames = useStore((state) => state.mailNames);
+  const selectedMailIndex = useStore((state) => state.selectedMailIndex);
+  const setSelectedMailIndex = useStore((state) => state.setSelectedMailIndex);
 
   return (
     <div className="flex flex-row gap-4 items-center justify-center py-4 flex-wrap">
@@ -21,7 +21,7 @@ const Selector = () => {
         </button>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default Selector
+export default Selector;
