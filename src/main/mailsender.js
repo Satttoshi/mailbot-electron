@@ -63,15 +63,17 @@ let mailOptions = {}
 
 async function changeMailOptions(mail, selectedMailIndex) {
   const config = await useConfig()
-  const txt = fs.readFileSync(contentFilePath, 'utf-8')
+  const content = fs.readFileSync(contentFilePath, 'utf-8')
   console.log(selectedMailIndex)
   const senderEmail = config.mailcredentials[selectedMailIndex].email
-  console.log('Sender Email:', senderEmail)
+  const senderName = config.mailcredentials[selectedMailIndex].name
+  const contentWithResolvedVariables = content.replace(/%NAME%/gi, senderName)
+  console.log('Sender Email:', senderEmail, 'Sender Name:', senderName)
   mailOptions = {
     from: senderEmail,
     to: mail,
     subject: title,
-    text: txt
+    text: contentWithResolvedVariables
   }
 }
 
