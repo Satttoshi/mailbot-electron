@@ -1,12 +1,12 @@
 import Versions from './components/Versions';
 import { useIPCEvents } from './hooks/useIPCEvents';
-import Textarea from './components/Textarea';
 import ConsoleTextarea from './components/ConsoleTextarea';
 import Settings from './components/Settings';
 import Toast from './components/Toast';
 import Selector from './components/Selector';
 import { useStore } from './hooks/useStore';
 import ShutdownToggle from './components/ShutdownToggle';
+import MailContentSettings from './components/MailContentSettings';
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents();
@@ -26,7 +26,7 @@ function App() {
         </div>
         <Selector />
         <ShutdownToggle shouldShutdown={shouldShutdown} />
-        <Textarea onSave={writeMailContentToTxt} />
+        <MailContentSettings onSave={writeMailContentToTxt} />
         <ConsoleTextarea />
         <Settings />
         <Versions></Versions>

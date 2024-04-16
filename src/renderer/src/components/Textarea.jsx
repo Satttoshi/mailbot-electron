@@ -22,7 +22,7 @@ function Textarea({ onSave }) {
     <>
       <div className="flex flex-col items-center justify-center">
         <textarea
-          className="mb-2 block w-full h-64 p-2.5 text-sm text-white shadow-md bg-purple-900 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          className="mb-4 block w-full h-64 p-2.5 text-sm text-gray-800 shadow-md bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:border-blue-600 focus:outline-none"
           value={contentText}
           onChange={handleChange}
           placeholder="Type something..."

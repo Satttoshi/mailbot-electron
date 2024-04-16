@@ -9,6 +9,12 @@ export const useStore = create((set) => ({
       return { messageLog: [...state.messageLog, `[${timestamp}] - ${message}`] };
     }),
 
+  mailTitle: localStorage.getItem('mailTitle') || 'Photo and video editing services!',
+  setMailTitle: (title) => {
+    localStorage.setItem('mailTitle', title);
+    set({ mailTitle: title });
+  },
+
   contentText: '',
   setContentText: (content) => set({ contentText: content }),
 
