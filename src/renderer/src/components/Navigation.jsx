@@ -6,16 +6,20 @@ const Navigation = () => {
   return (
     <nav className="fixed top-2 left-2">
       <ul className="flex font-bold">
-        <li
-          className={`text-white rounded-full ${route.pathname === '/' ? 'bg-purple-900 px-4 py-3' : 'text-slate-900 bg-purple-300 px-4 py-3 hover:bg-purple-400'}`}
-        >
-          <Link to="/">Content Settings</Link>
-        </li>
-        <li
-          className={`text-white rounded-full ${route.pathname === '/app-settings' ? 'bg-purple-900 px-4 py-3' : 'text-slate-900 bg-purple-300 px-4 py-3 hover:bg-purple-400'}`}
-        >
-          <Link to="/app-settings">App Options</Link>
-        </li>
+        <Link to="/">
+          <li
+            className={`text-white rounded-full ${route.pathname === '/' ? 'bg-purple-900 px-4 py-3' : 'text-slate-900 bg-purple-300 px-4 py-3 hover:bg-purple-400'}`}
+          >
+            Content Settings
+          </li>
+        </Link>
+        <Link to="/app-settings">
+          <li
+            className={`text-white rounded-full ${route.pathname === '/app-settings' ? 'bg-purple-900 px-4 py-3' : 'text-slate-900 bg-purple-300 px-4 py-3 hover:bg-purple-400'}`}
+          >
+            App Options
+          </li>
+        </Link>
       </ul>
     </nav>
   );
