@@ -8,14 +8,17 @@ import Versions from './components/Versions';
 import Navigation from './components/Navigation';
 
 function App() {
-  const { runMailer } = useIPCEvents();
+  const { runMailer, writeMailContentToTxt } = useIPCEvents();
 
   return (
     <HashRouter>
       <div className="absolute inset-0 px-2 pt-8 pb-80 flex flex-col items-center">
         <Navigation />
         <Routes>
-          <Route path="/" element={<ContentSettings />} />
+          <Route
+            path="/"
+            element={<ContentSettings writeMailContentToTxt={writeMailContentToTxt} />}
+          />
           <Route path="/app-settings" element={<AppSettings />} />
         </Routes>
       </div>

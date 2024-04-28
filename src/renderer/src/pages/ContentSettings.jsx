@@ -1,9 +1,6 @@
 import MailContentSettings from '../components/MailContentSettings';
-import { useIPCEvents } from '../hooks/useIPCEvents';
 
-const ContentSettings = () => {
-  const { writeMailContentToTxt } = useIPCEvents();
-
+const ContentSettings = ({ writeMailContentToTxt }) => {
   return <MailContentSettings onSave={writeMailContentToTxt} />;
 };
 
