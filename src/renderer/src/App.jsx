@@ -8,31 +8,21 @@ import { useStore } from './hooks/useStore';
 import ShutdownToggle from './components/ShutdownToggle';
 import MailContentSettings from './components/MailContentSettings';
 import Button from './components/Button';
+import BottomContainer from './components/BottomContainer';
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents();
-  const selectedMailIndex = useStore((state) => state.selectedMailIndex);
-  const shouldShutdown = useStore((state) => state.shouldShutdown);
-  const mailTitle = useStore((state) => state.mailTitle);
 
   return (
-    <div className="bg-fuchsia-300 p-2 flex justify-center">
+    <div className="bg-fuchsia-300 p-2 flex flex-col items-center justify-center">
       <div className="max-w-3xl">
-        <div className="flex flex-col items-center justify-center p-4">
-          <Button
-            onClick={() => runMailer({ selectedMailIndex, shouldShutdown, mailTitle })}
-            label="Start Mailbot"
-            variant="green"
-          />
-        </div>
         <Selector />
-        <ShutdownToggle shouldShutdown={shouldShutdown} />
         <MailContentSettings onSave={writeMailContentToTxt} />
-        <ConsoleTextarea />
         <Settings />
         <Versions></Versions>
         <Toast />
       </div>
+      <BottomContainer runMailer={runMailer} />
     </div>
   );
 }

@@ -11,6 +11,8 @@ const Selector = () => {
       {mailNames.map((element, index) => (
         <Button
           key={index}
+          index
+          selected={selectedMailIndex}
           label={element}
           variant="dynamicBorder"
           onClick={() => setSelectedMailIndex(index)}
