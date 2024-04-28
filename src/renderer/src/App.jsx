@@ -12,11 +12,11 @@ function App() {
 
   return (
     <HashRouter>
-      <div className="absolute inset-0 p-2 pb-80 flex flex-col items-center">
+      <div className="absolute inset-0 px-2 pt-8 pb-80 flex flex-col items-center">
         <Navigation />
         <Routes>
-          <Route path="/" element={<AppSettings />} />
-          <Route path="/app-settings" element={<ContentSettings />} />
+          <Route path="/" element={<ContentSettings />} />
+          <Route path="/app-settings" element={<AppSettings />} />
         </Routes>
       </div>
       <div className="fixed inset-x-0 bottom-0 flex flex-col items-center p-2">
