@@ -4,9 +4,10 @@ import fs from 'fs';
 import { shutdownComputer } from './shutdown';
 
 import { contentFilePath, privateConfigFilePath } from './utils/file-paths';
-import { getLogger, initLogger } from './logger';
+import { getEventSender, initEventSender } from './event-sender';
 
 let log;
+let trigger;
 
 // Read private-config.json file on demand
 function readConfig() {
@@ -186,9 +187,9 @@ async function main(selectedMailIndex, shouldShutdown, mailTitle) {
   }
 }
 
-export async function startMailsender(event, selectedMailIndex, shouldShutdown, mailTitle) {
-  initLogger(event);
-  log = getLogger();
+export async function startMailSender(event, selectedMailIndex, shouldShutdown, mailTitle) {
+  initEventSender(event);
+  log = trigger = getEventSender();
 
   try {
     const config = await useConfig();
@@ -200,12 +201,14 @@ export async function startMailsender(event, selectedMailIndex, shouldShutdown, 
     return;
   }
 
-  log('Mailsender started');
   main(selectedMailIndex, shouldShutdown, mailTitle)
     .then(() => {
-      log('Mailsender finished');
+      log('Mail Sender finished');
     })
-    .catch(log);
+    .catch(log)
+    .finally(() => {
+      trigger({ trigger: 'mailSender-stop' });
+    });
 }
 
 // Init the config on startup

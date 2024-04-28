@@ -5,6 +5,7 @@ export const useIPCEvents = () => {
   const setMessageLog = useStore((state) => state.setMessageLog);
   const contentText = useStore((state) => state.contentText);
   const runToast = useStore((state) => state.runToast);
+  const setIsRunning = useStore((state) => state.setIsRunning);
 
   const runMailer = ({ selectedMailIndex, shouldShutdown, mailTitle }) => {
     window.electron.ipcRenderer.send('run-mailer', {
@@ -12,6 +13,7 @@ export const useIPCEvents = () => {
       shouldShutdown,
       mailTitle
     });
+    setIsRunning(true);
     runToast('Bot started!');
   };
 
@@ -21,14 +23,22 @@ export const useIPCEvents = () => {
   };
 
   useEffect(() => {
-    const handleMessage = (event, arg) => {
+    const handleMessage = (_event, arg) => {
       setMessageLog(arg);
     };
 
-    const removePongListener = window.electron.ipcRenderer.on('message', handleMessage);
+    const handleTrigger = (_event, arg) => {
+      if (arg === 'mailSender-stop') {
+        setIsRunning(false);
+      }
+    };
+
+    const messageListener = window.electron.ipcRenderer.on('message', handleMessage);
+    const triggerListener = window.electron.ipcRenderer.on('trigger', handleTrigger);
 
     return () => {
-      removePongListener();
+      messageListener();
+      triggerListener();
     };
   }, []);
 

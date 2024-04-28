@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
-import { startMailsender } from './mailsender';
+import { startMailSender } from './mailsender';
 import fs from 'fs';
 import { appPath, contentFilePath, privateConfigFilePath } from './utils/file-paths';
 
@@ -56,7 +56,7 @@ app.whenReady().then(() => {
 
   // IPC
   ipcMain.on('run-mailer', (event, { selectedMailIndex, shouldShutdown, mailTitle }) =>
-    startMailsender(event, selectedMailIndex, shouldShutdown, mailTitle)
+    startMailSender(event, selectedMailIndex, shouldShutdown, mailTitle)
   );
 
   ipcMain.on('save-data', (event, data) => {

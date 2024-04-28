@@ -7,6 +7,7 @@ const BottomContainer = ({ runMailer }) => {
   const selectedMailIndex = useStore((state) => state.selectedMailIndex);
   const shouldShutdown = useStore((state) => state.shouldShutdown);
   const mailTitle = useStore((state) => state.mailTitle);
+  const isRunning = useStore((state) => state.isRunning);
 
   return (
     <div className="w-full h-full flex gap-4 bg-purple-300 rounded p-4">
@@ -15,6 +16,7 @@ const BottomContainer = ({ runMailer }) => {
           onClick={() => runMailer({ selectedMailIndex, shouldShutdown, mailTitle })}
           label="Start Mailbot"
           variant="green"
+          loading={isRunning}
         />
         <ShutdownToggle shouldShutdown={shouldShutdown} />
       </div>

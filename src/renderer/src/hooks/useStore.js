@@ -2,6 +2,9 @@ import { create } from 'zustand';
 import { toast } from 'react-toastify';
 
 export const useStore = create((set) => ({
+  isRunning: false,
+  setIsRunning: (running) => set({ isRunning: running }),
+
   messageLog: [],
   setMessageLog: (message) =>
     set((state) => {
