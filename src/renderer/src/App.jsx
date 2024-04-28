@@ -1,29 +1,36 @@
-import Versions from './components/Versions';
 import { useIPCEvents } from './hooks/useIPCEvents';
-import ConsoleTextarea from './components/ConsoleTextarea';
-import Settings from './components/Settings';
 import Toast from './components/Toast';
-import Selector from './components/Selector';
-import { useStore } from './hooks/useStore';
-import ShutdownToggle from './components/ShutdownToggle';
-import MailContentSettings from './components/MailContentSettings';
-import Button from './components/Button';
 import BottomContainer from './components/BottomContainer';
+import { HashRouter, Routes, Route, Link } from 'react-router-dom';
+import ContentSettings from './pages/ContentSettings';
+import AppSettings from './pages/AppSettings';
+import Versions from './components/Versions';
 
 function App() {
-  const { runMailer, writeMailContentToTxt } = useIPCEvents();
+  const { runMailer } = useIPCEvents();
 
   return (
-    <div className="bg-fuchsia-300 p-2 flex flex-col items-center justify-center">
-      <div className="max-w-3xl">
-        <Selector />
-        <MailContentSettings onSave={writeMailContentToTxt} />
-        <Settings />
-        <Versions></Versions>
+    <HashRouter>
+      <div className="bg-fuchsia-300 p-2 flex flex-col items-center justify-center">
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">content-settings</Link>
+            </li>
+            <li>
+              <Link to="/app-settings">app-settings</Link>
+            </li>
+          </ul>
+        </nav>
+        <Routes>
+          <Route path="/" element={<AppSettings />} />
+          <Route path="/app-settings" element={<ContentSettings />} />
+        </Routes>
+        <BottomContainer runMailer={runMailer} />
         <Toast />
+        <Versions />
       </div>
-      <BottomContainer runMailer={runMailer} />
-    </div>
+    </HashRouter>
   );
 }
 

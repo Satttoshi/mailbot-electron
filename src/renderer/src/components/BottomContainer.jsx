@@ -2,6 +2,7 @@ import ConsoleTextarea from './ConsoleTextarea';
 import Button from './Button';
 import { useStore } from '../hooks/useStore';
 import ShutdownToggle from './ShutdownToggle';
+import Selector from './Selector';
 
 const BottomContainer = ({ runMailer }) => {
   const selectedMailIndex = useStore((state) => state.selectedMailIndex);
@@ -18,6 +19,7 @@ const BottomContainer = ({ runMailer }) => {
           variant="green"
           loading={isRunning}
         />
+        <Selector />
         <ShutdownToggle shouldShutdown={shouldShutdown} />
       </div>
       <ConsoleTextarea />

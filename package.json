@@ -36,6 +36,7 @@
     "nodemailer": "^6.9.13",
     "prop-types": "^15.8.1",
     "react-lottie": "^1.2.4",
+    "react-router-dom": "^6.23.0",
     "react-toastify": "^10.0.5",
     "zustand": "^4.5.2"
   },
