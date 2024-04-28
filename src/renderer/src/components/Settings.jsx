@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '../hooks/useStore';
+import Button from './Button';
 
 function Settings() {
   const [formData, setFormData] = useState({
@@ -139,26 +140,14 @@ function Settings() {
                 onChange={(e) => handleMailCredentialsChange(index, 'password', e.target.value)}
               />
               <div className="flex">
-                <button
-                  type="button"
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold w-24 py-1 px-3 rounded focus:outline-none focus:shadow-outline"
-                  onClick={() => removeMailCredential(index)}
-                >
-                  Remove
-                </button>
+                <Button label="Remove" variant="red" onClick={() => removeMailCredential(index)} />
               </div>
             </div>
           </div>
         ))}
 
         <div className="flex justify-center mb-4">
-          <button
-            type="button"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={addMailCredential}
-          >
-            Add Another Email
-          </button>
+          <Button label="Add Sender Email" variant="blue" onClick={addMailCredential} />
         </div>
         <div className="mb-4 flex gap-4">
           <div className="flex-1">
@@ -189,12 +178,7 @@ function Settings() {
           </div>
         </div>
         <div className="flex items-center justify-between">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Update Settings
-          </button>
+          <Button variant="blue" label="Update Settings" type="submit" />
         </div>
       </form>
     </div>

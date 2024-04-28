@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useStore } from '../hooks/useStore';
+import Button from './Button';
 
 function Textarea({ onSave }) {
   const contentText = useStore((state) => state.contentText);
@@ -27,12 +28,7 @@ function Textarea({ onSave }) {
           onChange={handleChange}
           placeholder="Type something..."
         />
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={onSave}
-        >
-          update mail content
-        </button>
+        <Button label="Save Content" variant="blue" onClick={onSave} />
       </div>
     </>
   );
