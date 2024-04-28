@@ -1,7 +1,7 @@
 import { useIPCEvents } from './hooks/useIPCEvents';
 import Toast from './components/Toast';
 import BottomContainer from './components/BottomContainer';
-import { HashRouter, Routes, Route, Link } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import ContentSettings from './pages/ContentSettings';
 import AppSettings from './pages/AppSettings';
 import Versions from './components/Versions';
