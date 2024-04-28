@@ -5,27 +5,21 @@ import { HashRouter, Routes, Route, Link } from 'react-router-dom';
 import ContentSettings from './pages/ContentSettings';
 import AppSettings from './pages/AppSettings';
 import Versions from './components/Versions';
+import Navigation from './components/Navigation';
 
 function App() {
   const { runMailer } = useIPCEvents();
 
   return (
     <HashRouter>
-      <div className="bg-fuchsia-300 p-2 flex flex-col items-center justify-center">
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">content-settings</Link>
-            </li>
-            <li>
-              <Link to="/app-settings">app-settings</Link>
-            </li>
-          </ul>
-        </nav>
+      <div className="absolute inset-0 p-2 pb-80 flex flex-col items-center">
+        <Navigation />
         <Routes>
           <Route path="/" element={<AppSettings />} />
           <Route path="/app-settings" element={<ContentSettings />} />
         </Routes>
+      </div>
+      <div className="fixed inset-x-0 bottom-0 flex flex-col items-center p-2">
         <BottomContainer runMailer={runMailer} />
         <Toast />
         <Versions />
