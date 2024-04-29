@@ -8,14 +8,14 @@ const Navigation = () => {
       <ul className="flex font-bold">
         <Link to="/">
           <li
-            className={`text-white rounded-full ${route.pathname === '/' ? 'bg-purple-900 px-4 py-3' : 'text-slate-900 bg-purple-300 px-4 py-3 hover:bg-purple-400'}`}
+            className={`rounded-full ${route.pathname === '/' ? 'text-white bg-purple-900 px-4 py-3' : 'text-slate-900 bg-purple-300 px-4 py-3 hover:bg-purple-400'}`}
           >
             Content Settings
           </li>
         </Link>
         <Link to="/app-settings">
           <li
-            className={`text-white rounded-full ${route.pathname === '/app-settings' ? 'bg-purple-900 px-4 py-3' : 'text-slate-900 bg-purple-300 px-4 py-3 hover:bg-purple-400'}`}
+            className={`rounded-full ${route.pathname === '/app-settings' ? 'text-white bg-purple-900 px-4 py-3' : 'text-slate-900 bg-purple-300 px-4 py-3 hover:bg-purple-400'}`}
           >
             App Options
           </li>
