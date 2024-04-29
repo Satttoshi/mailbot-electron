@@ -4,6 +4,10 @@ import fs from 'fs';
 import { shutdownComputer } from './shutdown';
 
 import { contentFilePath, privateConfigFilePath } from './utils/file-paths';
+import { getEventSender, initEventSender } from './event-sender';
+
+let log;
+let trigger;
 
 // Read private-config.json file on demand
 function readConfig() {
@@ -75,7 +79,7 @@ async function changeMailOptions(mail, selectedMailIndex, mailTitle) {
 }
 
 // Send the email
-async function mailSender(log, selectedMailIndex) {
+async function mailSender(selectedMailIndex) {
   // eslint-disable-next-line no-useless-catch
   try {
     const config = await useConfig();
@@ -110,7 +114,7 @@ const currentSheet = [];
 let dedupedArr = [];
 
 // bring sheet row into array "currentSheet"
-async function updateSheet(log) {
+async function updateSheet() {
   const config = await useConfig();
   const doc = new GoogleSpreadsheet(config.spreadsheet_id);
 
@@ -141,7 +145,7 @@ function removeDuplicates(arr) {
 }
 
 //Main
-async function main(log, selectedMailIndex, shouldShutdown, mailTitle) {
+async function main(selectedMailIndex, shouldShutdown, mailTitle) {
   const config = await useConfig();
   if (!config) {
     log('No config found');
@@ -158,7 +162,7 @@ async function main(log, selectedMailIndex, shouldShutdown, mailTitle) {
   for (let i = 0; i < dedupedArr.length; i++) {
     await changeMailOptions(dedupedArr[i], selectedMailIndex, mailTitle);
     try {
-      await mailSender(log, selectedMailIndex);
+      await mailSender(selectedMailIndex);
     } catch (error) {
       log(error);
       isError = true;
@@ -183,18 +187,28 @@ async function main(log, selectedMailIndex, shouldShutdown, mailTitle) {
   }
 }
 
-export function startMailsender(event, selectedMailIndex, shouldShutdown, mailTitle) {
-  function log(message) {
-    console.log(message);
-    event.sender.send('message', message);
+export async function startMailSender(event, selectedMailIndex, shouldShutdown, mailTitle) {
+  initEventSender(event);
+  log = trigger = getEventSender();
+
+  try {
+    const config = await useConfig();
+    const senderName = config.mailcredentials[selectedMailIndex].name;
+    const senderEmail = config.mailcredentials[selectedMailIndex].email;
+    log(`Starting mail sender for ${senderName}, ${senderEmail}`);
+  } catch (error) {
+    log('Failed to read config file', error);
+    return;
   }
 
-  log('Mailsender started');
-  main(log, selectedMailIndex, shouldShutdown, mailTitle)
+  main(selectedMailIndex, shouldShutdown, mailTitle)
     .then(() => {
-      log('Mailsender finished');
+      log('Mail Sender finished');
     })
-    .catch(log);
+    .catch(log)
+    .finally(() => {
+      trigger({ trigger: 'mailSender-stop' });
+    });
 }
 
 // Init the config on startup

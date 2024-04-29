@@ -1,39 +1,35 @@
-import Versions from './components/Versions';
 import { useIPCEvents } from './hooks/useIPCEvents';
-import ConsoleTextarea from './components/ConsoleTextarea';
-import Settings from './components/Settings';
 import Toast from './components/Toast';
-import Selector from './components/Selector';
-import { useStore } from './hooks/useStore';
-import ShutdownToggle from './components/ShutdownToggle';
-import MailContentSettings from './components/MailContentSettings';
+import BottomContainer from './components/BottomContainer';
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import ContentSettings from './pages/ContentSettings';
+import AppSettings from './pages/AppSettings';
+import Versions from './components/Versions';
+import Navigation from './components/Navigation';
+import { loadMailNames } from './utils/read-private-config';
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents();
-  const selectedMailIndex = useStore((state) => state.selectedMailIndex);
-  const shouldShutdown = useStore((state) => state.shouldShutdown);
-  const mailTitle = useStore((state) => state.mailTitle);
+  loadMailNames().catch(console.error);
 
   return (
-    <div className="bg-fuchsia-300 p-2 flex justify-center">
-      <div className="max-w-3xl">
-        <div className="flex flex-col items-center justify-center p-4">
-          <button
-            className="bg-green-500 hover:bg-green-700 text-neutral-900 font-bold py-2 px-4 rounded"
-            onClick={() => runMailer({ selectedMailIndex, shouldShutdown, mailTitle })}
-          >
-            Start Mailbot
-          </button>
-        </div>
-        <Selector />
-        <ShutdownToggle shouldShutdown={shouldShutdown} />
-        <MailContentSettings onSave={writeMailContentToTxt} />
-        <ConsoleTextarea />
-        <Settings />
-        <Versions></Versions>
-        <Toast />
+    <HashRouter>
+      <div className="absolute inset-0 px-2 pt-8 pb-80 flex flex-col items-center">
+        <Navigation />
+        <Routes>
+          <Route
+            path="/"
+            element={<ContentSettings writeMailContentToTxt={writeMailContentToTxt} />}
+          />
+          <Route path="/app-settings" element={<AppSettings />} />
+        </Routes>
       </div>
-    </div>
+      <div className="fixed inset-x-0 bottom-0 flex flex-col items-center p-2">
+        <BottomContainer runMailer={runMailer} />
+        <Toast />
+        <Versions />
+      </div>
+    </HashRouter>
   );
 }
 

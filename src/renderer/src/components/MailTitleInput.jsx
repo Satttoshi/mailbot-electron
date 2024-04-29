@@ -13,7 +13,7 @@ const MailTitleInput = () => {
   return (
     <div className="mb-2">
       <label htmlFor="mailTitle" className="block text-white text-sm font-bold mb-2">
-        Title for your Mail
+        Title
       </label>
       <input
         type="text"

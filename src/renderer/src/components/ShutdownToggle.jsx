@@ -5,20 +5,23 @@ const ShutdownToggle = ({ shouldShutdown }) => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="flex items-center justify-between w-full max-w-xs px-6 py-2 mb-4 bg-purple-900 shadow-lg rounded-md">
-        <label className="font-medium text-white">should computer shutdown?</label>
-        <button
-          onClick={toggleShouldShutdown}
-          className={`${
-            shouldShutdown ? 'bg-blue-500' : 'bg-neutral-800'
-          } ml-4 relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50`}
-        >
-          <span
+      <div className="flex flex-col items-center gap-2 pt-2 pb-3 w-full max-w-xs bg-purple-900 shadow-lg rounded">
+        <label className="font-medium text-white whitespace-nowrap">shutdown?</label>
+        <div className="flex gap-2">
+          <button
+            onClick={toggleShouldShutdown}
             className={`${
-              shouldShutdown ? 'translate-x-6' : 'translate-x-1'
-            } inline-block w-4 h-4 transform bg-white rounded-full transition-transform`}
-          />
-        </button>
+              shouldShutdown ? 'bg-blue-500' : 'bg-neutral-800'
+            } relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50`}
+          >
+            <span
+              className={`${
+                shouldShutdown ? 'translate-x-6' : 'translate-x-1'
+              } inline-block w-4 h-4 transform bg-white rounded-full transition-transform`}
+            />
+          </button>
+          <span className="text-white">{shouldShutdown ? 'yes' : 'no'}</span>
+        </div>
       </div>
     </div>
   );
