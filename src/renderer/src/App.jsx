@@ -6,9 +6,11 @@ import ContentSettings from './pages/ContentSettings';
 import AppSettings from './pages/AppSettings';
 import Versions from './components/Versions';
 import Navigation from './components/Navigation';
+import { loadMailNames } from './utils/read-private-config';
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents();
+  loadMailNames().catch(console.error);
 
   return (
     <HashRouter>

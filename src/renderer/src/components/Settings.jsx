@@ -79,9 +79,9 @@ function Settings() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center">
+    <div className="w-full flex flex-col items-center justify-center overflow-auto">
       <form
-        className="w-full max-w-full bg-purple-900 shadow-md rounded p-8 pt-10 mb-4"
+        className="w-full max-w-full bg-purple-900 shadow-md rounded p-4 pt-10"
         onSubmit={handleSubmit}
       >
         <div className="mb-4">
