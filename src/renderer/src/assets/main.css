@@ -2,12 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Figtree';
+  src: url('./fonts/Figtree-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Figtree';
+  src: url('./fonts/Figtree-VariableFont_wght.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   @apply bg-fuchsia-200;
+  font-family: 'Figtree', Arial, sans-serif;
 }
 
 /* Custom Scrollbar Styles */
