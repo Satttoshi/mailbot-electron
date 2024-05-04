@@ -1,8 +1,8 @@
-import PageContainer from '../components/PageContainer';
+import PageWrapper from '../components/PageWrapper';
 
 const MailList = () => {
   return (
-    <PageContainer>
+    <PageWrapper>
       <h1 className="bg-blue-300">Mail List</h1>
       <h1 className="bg-blue-300">Mail List</h1>
       <h1 className="bg-blue-300">Mail List</h1>
@@ -35,7 +35,7 @@ const MailList = () => {
       <h1 className="bg-blue-300">Mail List</h1>
       <h1 className="bg-blue-300">Mail List</h1>
       <h1 className="bg-blue-300">Mail List</h1>
-    </PageContainer>
+    </PageWrapper>
   );
 };
 
