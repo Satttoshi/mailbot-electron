@@ -4,7 +4,7 @@ const Navigation = () => {
   const route = useLocation();
 
   return (
-    <nav className="fixed top-2 left-2">
+    <nav className="z-10 fixed top-2 left-2">
       <ul className="flex font-bold">
         <Link to="/">
           <li
@@ -18,6 +18,13 @@ const Navigation = () => {
             className={`rounded-full ${route.pathname === '/app-settings' ? 'text-white bg-purple-900 px-4 py-3' : 'text-slate-900 bg-purple-300 px-4 py-3 hover:bg-purple-400'}`}
           >
             App Options
+          </li>
+        </Link>
+        <Link to="/mail-list">
+          <li
+            className={`rounded-full ${route.pathname === '/mail-list' ? 'text-white bg-purple-900 px-4 py-3' : 'text-slate-900 bg-purple-300 px-4 py-3 hover:bg-purple-400'}`}
+          >
+            Mail List
           </li>
         </Link>
       </ul>

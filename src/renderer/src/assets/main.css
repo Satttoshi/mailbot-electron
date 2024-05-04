@@ -9,3 +9,24 @@
 body {
   @apply bg-fuchsia-200;
 }
+
+/* Custom Scrollbar Styles */
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #b6b6b6 transparent;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 0.5rem;
+  @apply rounded-r;
+  @apply bg-purple-300;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  @apply rounded-r;
+  @apply bg-blue-400;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
