@@ -34,6 +34,7 @@ const Table = () => {
   const undoRedoCellEditing = true;
   const undoRedoCellEditingLimit = 20;
 
+  // Handler to update rowData upon bulk paste
   const handlePaste = useCallback(
     (event) => {
       const paste = event.clipboardData.getData('text');
@@ -50,6 +51,9 @@ const Table = () => {
 
       const newData = [...rowData];
       newData.splice(currentSelection, rows.length, ...rows);
+      if (newData[newData.length - 1].emails !== '') {
+        newData.push({ '#': newData.length + 1, emails: '', sent: false });
+      }
 
       setRowData(newData);
     },
@@ -67,9 +71,9 @@ const Table = () => {
     gridApi.deselectAll();
   };
 
-  // Handler to check if the last cell with empty email is present, if not add one
-  const handleCellEditingStopped = (params) => {
-    if (params.rowIndex === rowData.length - 1) {
+  // Handler to check if the last row with empty email is present, if not add one
+  const handleLastRowInsertion = (selectedRowIndex) => {
+    if (selectedRowIndex === rowData.length - 1 && rowData[rowData.length - 1].emails !== '') {
       const newData = [...rowData, { '#': rowData.length + 1, emails: '', sent: false }];
       setRowData(newData);
     }
@@ -109,7 +113,7 @@ const Table = () => {
           setCurrentSelection(params.rowIndex);
         }}
         rowSelection="multiple"
-        onCellEditingStopped={handleCellEditingStopped}
+        onCellEditingStopped={(params) => handleLastRowInsertion(params.rowIndex)}
         undoRedoCellEditing={undoRedoCellEditing}
         undoRedoCellEditingLimit={undoRedoCellEditingLimit}
       />
