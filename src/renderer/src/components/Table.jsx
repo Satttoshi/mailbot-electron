@@ -20,7 +20,8 @@ const Table = () => {
     { '#': 8, emails: 'maxdefaultman2@gmail.com', sent: false },
     { '#': 9, emails: 'maxdefaultman0@gmail.com', sent: false },
     { '#': 10, emails: 'maxdefaultman1@gmail.com', sent: false },
-    { '#': 11, emails: 'maxdefaultman2@gmail.com', sent: false }
+    { '#': 11, emails: 'maxdefaultman2@gmail.com', sent: false },
+    { '#': 12, emails: '', sent: false }
   ]);
 
   // Column Definitions: Defines the columns to be displayed.
@@ -66,6 +67,14 @@ const Table = () => {
     gridApi.deselectAll();
   };
 
+  // Handler to check if the last cell with empty email is present, if not add one
+  const handleCellEditingStopped = (params) => {
+    if (params.rowIndex === rowData.length - 1) {
+      const newData = [...rowData, { '#': rowData.length + 1, emails: '', sent: false }];
+      setRowData(newData);
+    }
+  };
+
   // Setup keydown listener
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -100,6 +109,7 @@ const Table = () => {
           setCurrentSelection(params.rowIndex);
         }}
         rowSelection="multiple"
+        onCellEditingStopped={handleCellEditingStopped}
         undoRedoCellEditing={undoRedoCellEditing}
         undoRedoCellEditingLimit={undoRedoCellEditingLimit}
       />
