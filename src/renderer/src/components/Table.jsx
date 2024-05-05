@@ -41,13 +41,14 @@ const Table = () => {
       const rows = paste
         .split('\n')
         .map((emails) => emails.split('\t'))
-        .map((row, index) => {
+        .map((row) => {
           return {
-            '#': currentSelection + index + 1,
             emails: row[0].replace(/\r/g, ''),
             sent: false
           };
-        });
+        })
+        .filter((row) => row.emails !== '')
+        .map((row, index) => ({ ...row, '#': currentSelection + index + 1 }));
 
       const newData = [...rowData];
       newData.splice(currentSelection, rows.length, ...rows);
