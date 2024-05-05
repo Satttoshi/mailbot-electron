@@ -1,17 +1,16 @@
-import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
-import 'ag-grid-community/styles/ag-grid.css'; // Mandatory CSS required by the grid
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import '../assets/ag-grid-custom-icons.css';
-import { useCallback, useEffect, useState } from 'react'; // Optional Theme applied to the grid
+import { useCallback, useEffect, useState } from 'react';
 
 const Table = () => {
-  const [isEditing, setIsEditing] = useState(false);
   const [currentSelection, setCurrentSelection] = useState(0);
+  const [gridApi, setGridApi] = useState(null);
 
   // Row Data: The data to be displayed.
   const [rowData, setRowData] = useState([
-    { '#': 0, emails: 'maxdefaultman0@gmail.com', sent: true },
-    { '#': 1, emails: 'maxdefaultman1@gmail.com', sent: false },
+    { '#': 1, emails: 'maxdefaultman1@gmail.com', sent: true },
     { '#': 2, emails: 'maxdefaultman2@gmail.com', sent: false },
     { '#': 3, emails: 'maxdefaultman0@gmail.com', sent: false },
     { '#': 4, emails: 'maxdefaultman1@gmail.com', sent: false },
@@ -36,15 +35,13 @@ const Table = () => {
 
   const handlePaste = useCallback(
     (event) => {
-      if (!isEditing) return;
-
       const paste = event.clipboardData.getData('text');
       const rows = paste
         .split('\n')
         .map((emails) => emails.split('\t'))
         .map((row, index) => {
           return {
-            '#': currentSelection + index,
+            '#': currentSelection + index + 1,
             emails: row[0].replace(/\r/g, ''),
             sent: false
           };
@@ -55,8 +52,31 @@ const Table = () => {
 
       setRowData(newData);
     },
-    [rowData, isEditing]
+    [rowData, currentSelection]
   );
+
+  // Handler to update rowData upon deletion
+  const deleteSelectedRows = () => {
+    const selectedData = gridApi.getSelectedRows();
+    const res = rowData
+      .filter((row) => !selectedData.includes(row))
+      .map((row, index) => ({ ...row, '#': index + 1 }));
+
+    setRowData(res);
+    gridApi.deselectAll();
+  };
+
+  // Setup keydown listener
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape' || event.key === 'Delete') {
+        deleteSelectedRows();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [gridApi, rowData]);
 
   useEffect(() => {
     document.addEventListener('paste', handlePaste);
@@ -65,16 +85,20 @@ const Table = () => {
     };
   }, [handlePaste]);
 
+  // Callback to get the API
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  };
+
   return (
     <div className="ag-theme-quartz w-full h-full p-4">
       <AgGridReact
+        onGridReady={onGridReady}
         rowData={rowData}
         columnDefs={colDefs}
-        onCellEditingStarted={(params) => {
+        onCellClicked={(params) => {
           setCurrentSelection(params.rowIndex);
-          setIsEditing(true);
         }}
-        onCellEditingStopped={() => setIsEditing(false)}
         rowSelection="multiple"
         undoRedoCellEditing={undoRedoCellEditing}
         undoRedoCellEditingLimit={undoRedoCellEditingLimit}
