@@ -1,6 +1,8 @@
 .ag-theme-quartz {
   /* hide all font icons */
   --ag-icon-font-display: none;
+  --ag-grid-size: 3px;
+  --ag-wrapper-border-radius: 4px;
 
   /* provide SVG icons */
   --ag-icon-image-aggregation: url("./icons/aggregation.svg");
