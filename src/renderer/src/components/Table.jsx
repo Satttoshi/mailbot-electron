@@ -8,21 +8,8 @@ const Table = () => {
   const [currentSelection, setCurrentSelection] = useState(0);
   const [gridApi, setGridApi] = useState(null);
 
-  // Row Data: The data to be displayed.
-  const [rowData, setRowData] = useState([
-    { '#': 1, emails: 'maxdefaultman1@gmail.com', sent: true },
-    { '#': 2, emails: 'maxdefaultman2@gmail.com', sent: false },
-    { '#': 3, emails: 'maxdefaultman0@gmail.com', sent: false },
-    { '#': 4, emails: 'maxdefaultman1@gmail.com', sent: false },
-    { '#': 5, emails: 'maxdefaultman2@gmail.com', sent: false },
-    { '#': 6, emails: 'maxdefaultman0@gmail.com', sent: false },
-    { '#': 7, emails: 'maxdefaultman1@gmail.com', sent: false },
-    { '#': 8, emails: 'maxdefaultman2@gmail.com', sent: false },
-    { '#': 9, emails: 'maxdefaultman0@gmail.com', sent: false },
-    { '#': 10, emails: 'maxdefaultman1@gmail.com', sent: false },
-    { '#': 11, emails: 'maxdefaultman2@gmail.com', sent: false },
-    { '#': 12, emails: '', sent: false }
-  ]);
+  // Row Data: The initial data to be displayed.
+  const [rowData, setRowData] = useState([{ '#': 1, emails: '', sent: false }]);
 
   // Column Definitions: Defines the columns to be displayed.
   const colDefs = [
