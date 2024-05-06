@@ -1,6 +1,6 @@
 {
   "name": "mailbot-electron",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Send emails based on a gsheet list",
   "main": "./out/main/index.js",
   "author": "js",
@@ -33,7 +33,6 @@
     "@electron-toolkit/utils": "^3.0.0",
     "ag-grid-react": "^31.3.1",
     "dotenv": "^16.4.5",
-    "google-spreadsheet": "^3.3.0",
     "nodemailer": "^6.9.13",
     "prop-types": "^15.8.1",
     "react-lottie": "^1.2.4",

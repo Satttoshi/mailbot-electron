@@ -13,8 +13,6 @@ const Table = () => {
   const mailList = useStore((state) => state.mailList);
   const setMailList = useStore((state) => state.setMailList);
 
-  console.log(mailList);
-
   // Column Definitions: Defines the columns to be displayed.
   const colDefs = [
     { field: '#', width: 80 },

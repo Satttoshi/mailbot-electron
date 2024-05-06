@@ -59,9 +59,7 @@ app.whenReady().then(() => {
   });
 
   // IPC
-  ipcMain.on('run-mailer', (event, { selectedMailIndex, shouldShutdown, mailTitle }) =>
-    startMailSender(event, selectedMailIndex, shouldShutdown, mailTitle)
-  );
+  ipcMain.on('run-mailer', (event, mailerArgs) => startMailSender(event, mailerArgs));
 
   ipcMain.on('save-data', (event, data) => {
     console.log('Saving data to', contentFilePath);

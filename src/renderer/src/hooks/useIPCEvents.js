@@ -7,12 +7,8 @@ export const useIPCEvents = () => {
   const runToast = useStore((state) => state.runToast);
   const setIsRunning = useStore((state) => state.setIsRunning);
 
-  const runMailer = ({ selectedMailIndex, shouldShutdown, mailTitle }) => {
-    window.electron.ipcRenderer.send('run-mailer', {
-      selectedMailIndex,
-      shouldShutdown,
-      mailTitle
-    });
+  const runMailer = (mailerArgs) => {
+    window.electron.ipcRenderer.send('run-mailer', mailerArgs);
     setIsRunning(true);
     runToast('Bot started!');
   };

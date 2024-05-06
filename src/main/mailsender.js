@@ -1,5 +1,4 @@
 import nodemailer from 'nodemailer';
-import { GoogleSpreadsheet } from 'google-spreadsheet';
 import fs from 'fs';
 import { shutdownComputer } from './shutdown';
 
@@ -109,29 +108,16 @@ async function mailSender(selectedMailIndex) {
   }
 }
 
-// Load sheets in array
-const currentSheet = [];
-let dedupedArr = [];
-
-// bring sheet row into array "currentSheet"
-async function updateSheet() {
-  const config = await useConfig();
-  const doc = new GoogleSpreadsheet(config.spreadsheet_id);
-
-  await doc.useServiceAccountAuth(config.credentials);
-  await doc.loadInfo();
-  const sheet = doc.sheetsByIndex[0];
-  const rows = await sheet.getRows();
-  currentSheet.length = 0;
-  // Imports sheet to array based on current row count
-  for (let i = 0; i < rows.length; i++) {
-    currentSheet.push(rows[i].Email);
-  }
+let sanitizedMailList = [];
+// load mailList and remove duplicates
+function updateSheet(mailList) {
+  // map just the email addresses and filter out the ones that don't have an @
+  const plainMailList = mailList.map((row) => row.emails).filter((email) => email.includes('@'));
   // Remove duplicates
-  dedupedArr = removeDuplicates(currentSheet);
-  log(dedupedArr);
+  sanitizedMailList = removeDuplicates(plainMailList);
+  log(sanitizedMailList);
   log('Completed removing duplicates from current sheet');
-  return 'Completed loading current sheet with ' + dedupedArr.length + ' entries mulaa\n';
+  log('Completed loading current sheet with ' + sanitizedMailList.length + ' entries mulaa');
 }
 
 // remove Duplicates from array
@@ -145,7 +131,7 @@ function removeDuplicates(arr) {
 }
 
 //Main
-async function main(selectedMailIndex, shouldShutdown, mailTitle) {
+async function main(selectedMailIndex, shouldShutdown, mailTitle, mailList) {
   const config = await useConfig();
   if (!config) {
     log('No config found');
@@ -153,14 +139,13 @@ async function main(selectedMailIndex, shouldShutdown, mailTitle) {
   }
   const min = config.min * 1000;
   const max = config.max * 1000;
-  const result = await updateSheet(log);
-  console.log(result);
+  updateSheet(mailList);
 
   let isError = false;
 
   //Add Timestamps, update Mail configs
-  for (let i = 0; i < dedupedArr.length; i++) {
-    await changeMailOptions(dedupedArr[i], selectedMailIndex, mailTitle);
+  for (let i = 0; i < sanitizedMailList.length; i++) {
+    await changeMailOptions(sanitizedMailList[i], selectedMailIndex, mailTitle);
     try {
       await mailSender(selectedMailIndex);
     } catch (error) {
@@ -168,8 +153,8 @@ async function main(selectedMailIndex, shouldShutdown, mailTitle) {
       isError = true;
       break;
     }
-    log(`Send mail to: ${dedupedArr[i]} Index: ${i + 1}`);
-    if (i + 1 < dedupedArr.length) {
+    log(`Send mail to: ${sanitizedMailList[i]} Index: ${i + 1}`);
+    if (i + 1 < sanitizedMailList.length) {
       await delay(Math.floor(Math.random() * (max - min) + min));
     }
   }
@@ -187,9 +172,11 @@ async function main(selectedMailIndex, shouldShutdown, mailTitle) {
   }
 }
 
-export async function startMailSender(event, selectedMailIndex, shouldShutdown, mailTitle) {
+export async function startMailSender(event, mailerArgs) {
   initEventSender(event);
   log = trigger = getEventSender();
+
+  const { selectedMailIndex, shouldShutdown, mailTitle, mailList } = mailerArgs;
 
   try {
     const config = await useConfig();
@@ -201,7 +188,7 @@ export async function startMailSender(event, selectedMailIndex, shouldShutdown, 
     return;
   }
 
-  main(selectedMailIndex, shouldShutdown, mailTitle)
+  main(selectedMailIndex, shouldShutdown, mailTitle, mailList)
     .then(() => {
       log('Mail Sender finished');
     })
