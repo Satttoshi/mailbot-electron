@@ -38,5 +38,16 @@ export const useStore = create((set) => ({
   setMailList: (mailList) => {
     localStorage.setItem('mailList', JSON.stringify(mailList));
     set({ mailList });
+  },
+  updateMailSendStatus: (mail) => {
+    set((state) => {
+      const mailList = state.mailList.map((m) => {
+        if (m.emails === mail) {
+          return { ...m, sent: true };
+        }
+        return m;
+      });
+      return { mailList };
+    });
   }
 }));

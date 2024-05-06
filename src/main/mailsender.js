@@ -97,8 +97,8 @@ async function mailSender(selectedMailIndex) {
         if (error) {
           reject(error);
         } else {
-          // log(`${mailOptions.to} ${info.response}\n`)
           resolve(info);
+          trigger({ trigger: { message: 'mailSent', mail: mailOptions.to } });
         }
       });
     }); // Return info for further processing, if necessary
@@ -194,7 +194,7 @@ export async function startMailSender(event, mailerArgs) {
     })
     .catch(log)
     .finally(() => {
-      trigger({ trigger: 'mailSender-stop' });
+      trigger({ trigger: { message: 'mailSender-stop' } });
     });
 }
 

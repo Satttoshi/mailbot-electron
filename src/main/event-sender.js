@@ -2,15 +2,17 @@ let eventSender;
 
 function createEventSender(event) {
   return function sendEvent(message) {
-    console.log(message);
     // if Object has trigger property, send trigger event to renderer
-    if (typeof message === 'object' && message.trigger) {
+    if (typeof message === 'object' && message) {
       if (event?.sender) {
-        event.sender.send('trigger', message.trigger);
+        // use Trigger like <trigger({ trigger: { message: 'mailSent', mail } })>
+        console.log('Trigger:', message);
+        event.sender.send('trigger', message);
       }
       // else send message to renderer
     } else {
       if (event?.sender) {
+        console.log(message);
         event.sender.send('message', message);
       }
     }

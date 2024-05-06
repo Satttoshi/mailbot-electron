@@ -6,6 +6,7 @@ export const useIPCEvents = () => {
   const contentText = useStore((state) => state.contentText);
   const runToast = useStore((state) => state.runToast);
   const setIsRunning = useStore((state) => state.setIsRunning);
+  const updateMailSendStatus = useStore((state) => state.updateMailSendStatus);
 
   const runMailer = (mailerArgs) => {
     window.electron.ipcRenderer.send('run-mailer', mailerArgs);
@@ -23,9 +24,12 @@ export const useIPCEvents = () => {
       setMessageLog(arg);
     };
 
-    const handleTrigger = (_event, arg) => {
-      if (arg === 'mailSender-stop') {
+    const handleTrigger = (_event, args) => {
+      if (args.trigger.message === 'mailSender-stop') {
         setIsRunning(false);
+      }
+      if (args.trigger.message === 'mailSent') {
+        updateMailSendStatus(args.trigger.mail);
       }
     };
 
