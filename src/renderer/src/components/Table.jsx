@@ -56,7 +56,9 @@ const Table = () => {
     const res = mailList
       .filter((row) => !selectedData.includes(row))
       .map((row, index) => ({ ...row, '#': index + 1 }));
-
+    if (res.length === 0) {
+      res.push({ '#': 1, emails: '', sent: false });
+    }
     setMailList(res);
     gridApi.deselectAll();
   };
