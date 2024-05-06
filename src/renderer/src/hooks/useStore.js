@@ -32,5 +32,11 @@ export const useStore = create((set) => ({
   },
 
   shouldShutdown: false,
-  toggleShouldShutdown: () => set((state) => ({ shouldShutdown: !state.shouldShutdown }))
+  toggleShouldShutdown: () => set((state) => ({ shouldShutdown: !state.shouldShutdown })),
+
+  mailList: JSON.parse(localStorage.getItem('mailList')) || [{ '#': 1, emails: '', sent: false }],
+  setMailList: (mailList) => {
+    localStorage.setItem('mailList', JSON.stringify(mailList));
+    set({ mailList });
+  }
 }));

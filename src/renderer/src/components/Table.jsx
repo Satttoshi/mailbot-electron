@@ -3,13 +3,17 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import '../assets/ag-grid-custom-icons.css';
 import { useCallback, useEffect, useState } from 'react';
+import { useStore } from '../hooks/useStore';
 
 const Table = () => {
   const [currentSelection, setCurrentSelection] = useState(0);
   const [gridApi, setGridApi] = useState(null);
 
-  // Row Data: The initial data to be displayed.
-  const [rowData, setRowData] = useState([{ '#': 1, emails: '', sent: false }]);
+  // Row Data, or also known as mailList
+  const mailList = useStore((state) => state.mailList);
+  const setMailList = useStore((state) => state.setMailList);
+
+  console.log(mailList);
 
   // Column Definitions: Defines the columns to be displayed.
   const colDefs = [
@@ -37,33 +41,33 @@ const Table = () => {
         .filter((row) => row.emails !== '')
         .map((row, index) => ({ ...row, '#': currentSelection + index + 1 }));
 
-      const newData = [...rowData];
+      const newData = [...mailList];
       newData.splice(currentSelection, rows.length, ...rows);
       if (newData[newData.length - 1].emails !== '') {
         newData.push({ '#': newData.length + 1, emails: '', sent: false });
       }
 
-      setRowData(newData);
+      setMailList(newData);
     },
-    [rowData, currentSelection]
+    [mailList, currentSelection]
   );
 
   // Handler to update rowData upon deletion
   const deleteSelectedRows = () => {
     const selectedData = gridApi.getSelectedRows();
-    const res = rowData
+    const res = mailList
       .filter((row) => !selectedData.includes(row))
       .map((row, index) => ({ ...row, '#': index + 1 }));
 
-    setRowData(res);
+    setMailList(res);
     gridApi.deselectAll();
   };
 
   // Handler to check if the last row with empty email is present, if not add one
   const handleLastRowInsertion = (selectedRowIndex) => {
-    if (selectedRowIndex === rowData.length - 1 && rowData[rowData.length - 1].emails !== '') {
-      const newData = [...rowData, { '#': rowData.length + 1, emails: '', sent: false }];
-      setRowData(newData);
+    if (selectedRowIndex === mailList.length - 1 && mailList[mailList.length - 1].emails !== '') {
+      const newData = [...mailList, { '#': mailList.length + 1, emails: '', sent: false }];
+      setMailList(newData);
     }
   };
 
@@ -77,7 +81,7 @@ const Table = () => {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [gridApi, rowData]);
+  }, [gridApi, mailList]);
 
   useEffect(() => {
     document.addEventListener('paste', handlePaste);
@@ -95,7 +99,7 @@ const Table = () => {
     <div className="ag-theme-quartz w-full h-full p-4">
       <AgGridReact
         onGridReady={onGridReady}
-        rowData={rowData}
+        rowData={mailList}
         columnDefs={colDefs}
         onCellClicked={(params) => {
           setCurrentSelection(params.rowIndex);
