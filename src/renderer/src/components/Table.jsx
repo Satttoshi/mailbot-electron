@@ -56,14 +56,19 @@ const Table = () => {
     const res = mailList
       .filter((row) => !selectedData.includes(row))
       .map((row, index) => ({ ...row, '#': index + 1 }));
+    // check if all rows are deleted, if yes add one empty row
     if (res.length === 0) {
       res.push({ '#': 1, emails: '', sent: false });
+    }
+    // check if the last row is empty, if not add one
+    if (res[res.length - 1].emails !== '') {
+      res.push({ '#': res.length + 1, emails: '', sent: false });
     }
     setMailList(res);
     gridApi.deselectAll();
   };
 
-  // Handler to check if the last row with empty email is present, if not add one
+  // Handler to check if the last row with empty email is present while editing, if not add one
   const handleLastRowInsertion = (selectedRowIndex) => {
     if (selectedRowIndex === mailList.length - 1 && mailList[mailList.length - 1].emails !== '') {
       const newData = [...mailList, { '#': mailList.length + 1, emails: '', sent: false }];
