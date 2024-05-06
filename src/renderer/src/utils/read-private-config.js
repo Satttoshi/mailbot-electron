@@ -20,6 +20,5 @@ async function getMailNames() {
 
 export const loadMailNames = async () => {
   const mailNames = await getMailNames();
-  console.log('mailNames:', mailNames);
   useStore.getState().setMailNames(mailNames);
 };

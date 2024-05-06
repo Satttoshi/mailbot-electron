@@ -7,6 +7,7 @@ import AppSettings from './pages/AppSettings';
 import Versions from './components/Versions';
 import Navigation from './components/Navigation';
 import { loadMailNames } from './utils/read-private-config';
+import MailList from './pages/MailList';
 
 function App() {
   const { runMailer, writeMailContentToTxt } = useIPCEvents();
@@ -22,6 +23,7 @@ function App() {
             element={<ContentSettings writeMailContentToTxt={writeMailContentToTxt} />}
           />
           <Route path="/app-settings" element={<AppSettings />} />
+          <Route path="/mail-list" element={<MailList />} />
         </Routes>
       </div>
       <div className="fixed inset-x-0 bottom-0 flex flex-col items-center p-2">

@@ -31,6 +31,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
+    "ag-grid-react": "^31.3.1",
     "dotenv": "^16.4.5",
     "google-spreadsheet": "^3.3.0",
     "nodemailer": "^6.9.13",
@@ -57,6 +58,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.4.3",
-    "vite": "^5.0.12"
+    "vite": "^5.0.12",
+    "vite-svg-loader": "^5.1.0"
   }
 }

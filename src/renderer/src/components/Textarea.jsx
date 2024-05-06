@@ -21,7 +21,7 @@ function Textarea({ onSave }) {
 
   return (
     <>
-      <div className="flex-grow flex flex-col items-center justify-center mt-2">
+      <div className="flex-grow flex flex-col items-center justify-center mt-2 pb-3">
         <label className="self-start block text-white text-sm font-bold mb-2">Content</label>
         <textarea
           className="resize-none w-full flex-grow p-2.5 text-sm text-gray-800 shadow-md bg-white border border-solid border-gray-300 rounded transition ease-in-out focus:border-blue-600 focus:outline-none"

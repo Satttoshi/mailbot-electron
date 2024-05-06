@@ -1,0 +1,63 @@
+.ag-theme-quartz {
+  /* hide all font icons */
+  --ag-icon-font-display: none;
+  --ag-grid-size: 3px;
+  --ag-wrapper-border-radius: 4px;
+
+  /* provide SVG icons */
+  --ag-icon-image-aggregation: url("./icons/aggregation.svg");
+  --ag-icon-image-arrows: url("./icons/arrows.svg");
+  --ag-icon-image-asc: url("./icons/asc.svg");
+  --ag-icon-image-cancel: url("./icons/cancel.svg");
+  --ag-icon-image-chart: url("./icons/chart.svg");
+  --ag-icon-image-checkbox-checked: url("./icons/checkbox-checked.svg");
+  --ag-icon-image-checkbox-indeterminate: url("./icons/checkbox-indeterminate.svg");
+  --ag-icon-image-checkbox-unchecked: url("./icons/checkbox-unchecked.svg");
+  --ag-icon-image-color-picker: url("./icons/color-picker.svg");
+  --ag-icon-image-columns: url("./icons/columns.svg");
+  --ag-icon-image-contracted: url("./icons/contracted.svg");
+  --ag-icon-image-copy: url("./icons/copy.svg");
+  --ag-icon-image-cross: url("./icons/cross.svg");
+  --ag-icon-image-cut: url("./icons/cut.svg");
+  --ag-icon-image-desc: url("./icons/desc.svg");
+  --ag-icon-image-down: url("./icons/down.svg");
+  --ag-icon-image-expanded: url("./icons/expanded.svg");
+  --ag-icon-image-eye: url("./icons/eye.svg");
+  --ag-icon-image-eye-slash: url("./icons/eye-slash.svg");
+  --ag-icon-image-filter: url("./icons/filter.svg");
+  --ag-icon-image-first: url("./icons/first.svg");
+  --ag-icon-image-grip: url("./icons/grip.svg");
+  --ag-icon-image-group: url("./icons/group.svg");
+  --ag-icon-image-last: url("./icons/last.svg");
+  --ag-icon-image-left: url("./icons/left.svg");
+  --ag-icon-image-linked: url("./icons/linked.svg");
+  --ag-icon-image-loading: url("./icons/loading.svg");
+  --ag-icon-image-maximize: url("./icons/maximize.svg");
+  --ag-icon-image-menu: url("./icons/menu.svg");
+  --ag-icon-image-minimize: url("./icons/minimize.svg");
+  --ag-icon-image-minus: url("./icons/minus.svg");
+  --ag-icon-image-next: url("./icons/next.svg");
+  --ag-icon-image-none: url("./icons/none.svg");
+  --ag-icon-image-not-allowed: url("./icons/not-allowed.svg");
+  --ag-icon-image-paste: url("./icons/paste.svg");
+  --ag-icon-image-pin: url("./icons/pin.svg");
+  --ag-icon-image-pivot: url("./icons/pivot.svg");
+  --ag-icon-image-plus: url("./icons/plus.svg");
+  --ag-icon-image-previous: url("./icons/previous.svg");
+  --ag-icon-image-radio-button-off: url("./icons/radio-button-off.svg");
+  --ag-icon-image-radio-button-on: url("./icons/radio-button-on.svg");
+  --ag-icon-image-right: url("./icons/right.svg");
+  --ag-icon-image-save: url("./icons/save.svg");
+  --ag-icon-image-small-down: url("./icons/small-down.svg");
+  --ag-icon-image-small-left: url("./icons/small-left.svg");
+  --ag-icon-image-small-right: url("./icons/small-right.svg");
+  --ag-icon-image-small-up: url("./icons/small-up.svg");
+  --ag-icon-image-tick: url("./icons/tick.svg");
+  --ag-icon-image-tree-closed: url("./icons/tree-closed.svg");
+  --ag-icon-image-tree-indeterminate: url("./icons/tree-indeterminate.svg");
+  --ag-icon-image-tree-open: url("./icons/tree-open.svg");
+  --ag-icon-image-unlinked: url("./icons/unlinked.svg");
+  --ag-icon-image-up: url("./icons/up.svg");
+
+  /* Add More */
+}

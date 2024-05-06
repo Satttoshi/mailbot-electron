@@ -20,7 +20,7 @@ const ShutdownToggle = ({ shouldShutdown }) => {
               } inline-block w-4 h-4 transform bg-white rounded-full transition-transform`}
             />
           </button>
-          <span className="text-white">{shouldShutdown ? 'yes' : 'no'}</span>
+          <span className="text-white w-7">{shouldShutdown ? 'yes' : 'no'}</span>
         </div>
       </div>
     </div>

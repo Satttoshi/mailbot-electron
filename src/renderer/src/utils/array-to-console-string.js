@@ -1,3 +1,3 @@
 export function arrayToConsoleString(array) {
-  return array.join('\n')
+  return array.join('\n');
 }
