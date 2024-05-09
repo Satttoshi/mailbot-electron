@@ -5,6 +5,23 @@ import '../assets/ag-grid-custom-icons.css';
 import { useCallback, useEffect, useState } from 'react';
 import { useStore } from '../hooks/useStore';
 
+const emailRegex = /^\S+@\S+\.\S+$/;
+
+// Handler to sanitize the email rows, filters empty rows, and rows without '@', and reorders serial numbers
+function sanitizeEmailRows(rows) {
+  return rows
+    .filter((row) => row.emails !== '')
+    .filter((row) => row.emails.includes('@'))
+    .map((row, index) => ({ ...row, '#': index + 1 }));
+}
+
+// Handler to check if the last row with empty email is present while editing, if not add one
+function createLastRowInsertion(mailList) {
+  if (mailList[mailList.length - 1].emails !== '') {
+    return [...mailList, { '#': mailList.length + 1, emails: '', sent: false }];
+  } else return [...mailList];
+}
+
 const Table = () => {
   const [currentSelection, setCurrentSelection] = useState(0);
   const [gridApi, setGridApi] = useState(null);
@@ -37,6 +54,7 @@ const Table = () => {
           };
         })
         .filter((row) => row.emails !== '')
+        .filter((row) => row.emails.includes('@'))
         .map((row, index) => ({ ...row, '#': currentSelection + index + 1 }));
 
       const newData = [...mailList];
@@ -45,7 +63,7 @@ const Table = () => {
         newData.push({ '#': newData.length + 1, emails: '', sent: false });
       }
 
-      setMailList(newData);
+      setMailList(createLastRowInsertion(sanitizeEmailRows(newData)));
     },
     [mailList, currentSelection]
   );
@@ -66,14 +84,6 @@ const Table = () => {
     }
     setMailList(res);
     gridApi.deselectAll();
-  };
-
-  // Handler to check if the last row with empty email is present while editing, if not add one
-  const handleLastRowInsertion = (selectedRowIndex) => {
-    if (selectedRowIndex === mailList.length - 1 && mailList[mailList.length - 1].emails !== '') {
-      const newData = [...mailList, { '#': mailList.length + 1, emails: '', sent: false }];
-      setMailList(newData);
-    }
   };
 
   // Setup keydown listener
@@ -110,7 +120,16 @@ const Table = () => {
           setCurrentSelection(params.rowIndex);
         }}
         rowSelection="multiple"
-        onCellEditingStopped={(params) => handleLastRowInsertion(params.rowIndex)}
+        onCellEditingStopped={(params) => {
+          // Check if the email is valid, if not revert to old value
+          if (!emailRegex.test(params.value)) {
+            params.node.setDataValue(params.column.colId, params.oldValue);
+          }
+          // Check if the last row is being edited, if yes add one more row
+          if (params.rowIndex === mailList.length - 1) {
+            setMailList(createLastRowInsertion(mailList));
+          }
+        }}
         undoRedoCellEditing={undoRedoCellEditing}
         undoRedoCellEditingLimit={undoRedoCellEditingLimit}
       />
