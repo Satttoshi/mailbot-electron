@@ -1,26 +1,5 @@
 {
-  "spreadsheet_id": "1Li457645675676573657657676prSY",
-  "credentials": {
-    "type": "service_account",
-    "project_id": "leer",
-    "private_key_id": "201a9a4534535345f6f1d024be1f635b4f7",
-    "private_key":
-    "insert PrivateKey",
-    "client_email": "l6868t@les688bot.iam.gserviceaccount.com",
-    "client_id": "10345654645654781",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url":
-    "https://www.googleapis.com/robot/v1/metadata/x509/le456456%40l57878t.iam.gserviceaccount.com"
-  },
-  "mailcredentials": [
-    {
-      "name": "Max",
-      "email": "example@gmail.com",
-      "password": "notARealPassword"
-    }
-  ],
-  "min": 20,
-  "max": 120
+  "mailcredentials": [],
+  "min": "10",
+  "max": "20"
 }

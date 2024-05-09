@@ -74,10 +74,6 @@ app.whenReady().then(() => {
 
   ipcMain.on('save-private-config-json', (event, data) => {
     const configObject = {
-      spreadsheet_id: data.spreadsheet_id || 'please enter a spreadsheets ID',
-      credentials:
-        JSON.parse(data.credentials) ||
-        'please enter valid google service-account json credentials',
       mailcredentials: data.mailcredentials ?? [],
       min: data.min || 20,
       max: data.max || 120
