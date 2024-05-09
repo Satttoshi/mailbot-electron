@@ -34,7 +34,7 @@ const Table = () => {
   const colDefs = [
     { field: '#', width: 80 },
     { field: 'emails', width: 300, editable: true },
-    { field: 'sent', width: 120 }
+    { field: 'sent', width: 120, editable: true }
   ];
 
   const undoRedoCellEditing = true;
@@ -121,6 +121,8 @@ const Table = () => {
         }}
         rowSelection="multiple"
         onCellEditingStopped={(params) => {
+          // Check if checkbox is being edited, if yes return
+          if (typeof params.value === 'boolean') return;
           // Check if the email is valid, if not revert to old value
           if (!emailRegex.test(params.value)) {
             params.node.setDataValue(params.column.colId, params.oldValue);
