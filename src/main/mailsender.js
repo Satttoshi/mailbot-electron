@@ -171,6 +171,7 @@ export async function startMailSender(event, mailerArgs) {
     const senderEmail = config.mailcredentials[selectedMailIndex].email;
     log(`Starting mail sender for ${senderName}, ${senderEmail}`);
   } catch (error) {
+    delay(1000).then(() => trigger({ trigger: { message: 'mailSender-stop' } }));
     log('Failed to read config file', error);
     return;
   }
