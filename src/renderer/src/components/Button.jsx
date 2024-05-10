@@ -1,4 +1,4 @@
-import Lottie from 'react-lottie';
+import Lottie from 'lottie-react';
 import animationData from '../assets/lottiefiles/paper-plane';
 
 const Button = ({ label, variant, onClick, className, type = 'button', loading, ...props }) => {
@@ -11,25 +11,10 @@ const Button = ({ label, variant, onClick, className, type = 'button', loading, 
 
   const buttonStyle = `${baseStyle} ${variants[variant] || ''} ${className || ''}`;
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    },
-    cursor: 'not-allowed'
-  };
-
   const content =
     loading && variant === 'green' ? (
       <div className="flex justify-center items-center h-full w-full overflow-hidden cursor-not-allowed">
-        <Lottie
-          style={{ cursor: 'not-allowed' }}
-          options={defaultOptions}
-          height={128}
-          width={128}
-        />
+        <Lottie animationData={animationData} height={128} width={128} />
       </div>
     ) : (
       label
