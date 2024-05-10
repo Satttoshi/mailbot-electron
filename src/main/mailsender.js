@@ -108,7 +108,6 @@ function updateSheet(mailList) {
   // map just the email addresses and filter out the ones that don't have an @ and have already been sent
   const plainMailList = mailList
     .filter((email) => {
-      console.log('Email: ', email, 'Sent: ', email.sent);
       return email.emails.includes('@') && !email.sent;
     })
     .map((row) => row.emails);
