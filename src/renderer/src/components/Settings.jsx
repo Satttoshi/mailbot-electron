@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '../hooks/useStore';
 import Button from './Button';
+import ThemeSwitch from './ThemeSwitch';
 
 function Settings() {
   const [formData, setFormData] = useState({
@@ -141,6 +142,7 @@ function Settings() {
           <Button variant="blue" label="Update Settings" type="submit" />
         </div>
       </form>
+      <ThemeSwitch />
     </div>
   );
 }
