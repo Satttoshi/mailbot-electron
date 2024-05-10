@@ -12,10 +12,21 @@ export const useStore = create((set, get) => ({
       return { messageLog: [...state.messageLog, `[${timestamp}] - ${message}`] };
     }),
 
-  mailTitle: localStorage.getItem('mailTitle') || 'Photo and video editing services!',
+  initialData: { contentSettings: { mailTitle: '', contentText: '' } },
+  setInitialData: async () => {
+    const mailTitle = localStorage.getItem('mailTitle') || 'Insert mail title here...';
+    const contentText = await window.api.readContentFile();
+    set({ initialData: { contentSettings: { mailTitle, contentText } } });
+    get().setContentText(contentText);
+  },
+
+  mailTitle: localStorage.getItem('mailTitle') || 'Insert mail title here...',
   setMailTitle: (title) => {
-    localStorage.setItem('mailTitle', title);
     set({ mailTitle: title });
+  },
+  setMailTitleInLocalStorage: () => {
+    const title = get().mailTitle;
+    localStorage.setItem('mailTitle', title);
   },
 
   contentText: '',

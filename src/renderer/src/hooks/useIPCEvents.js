@@ -17,6 +17,7 @@ export const useIPCEvents = () => {
 
   const writeMailContentToTxt = () => {
     window.electron.ipcRenderer.send('save-data', contentText);
+    localStorage.setItem('mailContent', contentText);
     runToast('Mail content saved!');
   };
 
