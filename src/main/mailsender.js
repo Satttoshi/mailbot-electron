@@ -1,9 +1,9 @@
 import nodemailer from 'nodemailer';
 import fs from 'fs';
-import { shutdownComputer } from './shutdown';
 
 import { contentFilePath, privateConfigFilePath } from './utils/file-paths';
 import { getEventSender, initEventSender } from './event-sender';
+import { delay } from '../utils/delay';
 
 let log;
 let trigger;
@@ -50,13 +50,6 @@ fs.watchFile(privateConfigFilePath, () => {
       .catch((err) => console.error('Failed to reload config:', err));
   }, 1000);
 });
-
-// Delay function like sleep() in python
-function delay(time) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, time);
-  });
-}
 
 // Define the email options
 let mailOptions = {};
@@ -131,7 +124,7 @@ function removeDuplicates(arr) {
 }
 
 //Main
-async function main(selectedMailIndex, shouldShutdown, mailTitle, mailList) {
+async function main(selectedMailIndex, mailTitle, mailList) {
   const config = await useConfig();
   if (!config) {
     log('No config found');
@@ -164,19 +157,13 @@ async function main(selectedMailIndex, shouldShutdown, mailTitle, mailList) {
   }
   await delay(2000);
   log('No more EMAILS! Pypenschuch, Bot ist fertig :)');
-
-  if (shouldShutdown) {
-    await delay(5000);
-    log('Gute Nacht! Shutting down...');
-    shutdownComputer(log);
-  }
 }
 
 export async function startMailSender(event, mailerArgs) {
   initEventSender(event);
   log = trigger = getEventSender();
 
-  const { selectedMailIndex, shouldShutdown, mailTitle, mailList } = mailerArgs;
+  const { selectedMailIndex, mailTitle, mailList } = mailerArgs;
 
   try {
     const config = await useConfig();
@@ -188,7 +175,7 @@ export async function startMailSender(event, mailerArgs) {
     return;
   }
 
-  main(selectedMailIndex, shouldShutdown, mailTitle, mailList)
+  main(selectedMailIndex, mailTitle, mailList)
     .then(() => {
       log('Mail Sender finished');
     })

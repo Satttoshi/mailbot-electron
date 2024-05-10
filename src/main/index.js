@@ -5,6 +5,7 @@ import icon from '../../resources/icon.png?asset';
 import { startMailSender } from './mailsender';
 import fs from 'fs';
 import { appPath, contentFilePath, privateConfigFilePath } from './utils/file-paths';
+import { shutdown } from './shutdown';
 
 function createWindow() {
   // Create the browser window.
@@ -88,6 +89,8 @@ app.whenReady().then(() => {
       console.log('Data saved successfully.');
     });
   });
+
+  ipcMain.on('shutdown', (event) => shutdown(event));
 
   ipcMain.handle('get-app-path', async () => {
     return appPath;

@@ -11,7 +11,7 @@ const BottomContainer = ({ runMailer }) => {
   const isRunning = useStore((state) => state.isRunning);
   const mailList = useStore((state) => state.mailList);
 
-  const mailerArgs = { selectedMailIndex, shouldShutdown, mailTitle, mailList };
+  const mailerArgs = { selectedMailIndex, mailTitle, mailList };
 
   return (
     <div className="w-full h-full flex gap-4 bg-purple-300 rounded p-4">
