@@ -14,6 +14,9 @@ import { useEffect } from 'react';
 function App() {
   const setInitialData = useStore((state) => state.setInitialData);
   const setMailTitleInLocalStorage = useStore((state) => state.setMailTitleInLocalStorage);
+  const updateInitialDataContentSettings = useStore(
+    (state) => state.updateInitialDataContentSettings
+  );
   const { runMailer, writeMailContentToTxt } = useIPCEvents();
 
   useEffect(() => {
@@ -23,6 +26,7 @@ function App() {
   }, []);
 
   const handleSave = () => {
+    updateInitialDataContentSettings();
     writeMailContentToTxt();
     setMailTitleInLocalStorage();
   };

@@ -19,6 +19,13 @@ export const useStore = create((set, get) => ({
     set({ initialData: { contentSettings: { mailTitle, contentText } } });
     get().setContentText(contentText);
   },
+  updateInitialDataContentSettings: () => {
+    set({
+      initialData: {
+        contentSettings: { mailTitle: get().mailTitle, contentText: get().contentText }
+      }
+    });
+  },
 
   mailTitle: localStorage.getItem('mailTitle') || 'Insert mail title here...',
   setMailTitle: (title) => {
