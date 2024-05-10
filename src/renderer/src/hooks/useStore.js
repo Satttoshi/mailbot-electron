@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { toast } from 'react-toastify';
 
-export const useStore = create((set) => ({
+export const useStore = create((set, get) => ({
   isRunning: false,
   setIsRunning: (running) => set({ isRunning: running }),
 
@@ -36,18 +36,22 @@ export const useStore = create((set) => ({
 
   mailList: JSON.parse(localStorage.getItem('mailList')) || [{ '#': 1, emails: '', sent: false }],
   setMailList: (mailList) => {
-    localStorage.setItem('mailList', JSON.stringify(mailList));
     set({ mailList });
+    get().updateMailListInLocalStorage();
+  },
+  updateMailListInLocalStorage: () => {
+    const mailList = get().mailList;
+    localStorage.setItem('mailList', JSON.stringify(mailList));
   },
   updateMailSendStatus: (mail) => {
-    set((state) => {
-      const mailList = state.mailList.map((m) => {
-        if (m.emails === mail) {
-          return { ...m, sent: true };
-        }
-        return m;
-      });
-      return { mailList };
+    const setMailList = get().setMailList;
+    const mailList = get().mailList;
+    const updatedMailList = mailList.map((row) => {
+      if (row.emails === mail) {
+        return { ...row, sent: true };
+      }
+      return row;
     });
+    setMailList(updatedMailList);
   }
 }));

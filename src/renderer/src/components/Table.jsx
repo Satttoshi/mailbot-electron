@@ -29,6 +29,7 @@ const Table = () => {
   // Row Data, or also known as mailList
   const mailList = useStore((state) => state.mailList);
   const setMailList = useStore((state) => state.setMailList);
+  const updateMailListInLocalStorage = useStore((state) => state.updateMailListInLocalStorage);
 
   // Column Definitions: Defines the columns to be displayed.
   const colDefs = [
@@ -122,7 +123,10 @@ const Table = () => {
         rowSelection="multiple"
         onCellEditingStopped={(params) => {
           // Check if checkbox is being edited, if yes return
-          if (typeof params.value === 'boolean') return;
+          if (typeof params.value === 'boolean') {
+            updateMailListInLocalStorage();
+            return;
+          }
           // Check if the email is valid, if not revert to old value
           if (!emailRegex.test(params.value)) {
             params.node.setDataValue(params.column.colId, params.oldValue);
