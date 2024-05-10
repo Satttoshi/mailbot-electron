@@ -1,5 +1,5 @@
 :root {
-  /* Default theme */
+  /* default theme */
   --color-black: #0A0A0A; /* neutral-950 */
   --color-dark: #171717; /* neutral-900 */
   --color-grey: #404040; /* neutral-700 */
@@ -20,42 +20,42 @@
 }
 
 [color-theme="theme2"] {
-  /* Second theme */
+  /* second theme */
   --color-black: #0A0A0A; /* neutral-950 */
   --color-dark: #171717; /* neutral-900 */
   --color-grey: #404040; /* neutral-700 */
   --color-lightgrey: #D4D4D4; /* neutral-300 */
   --color-white: #FAFAFA; /* neutral-50 */
-  --color-1: #F5D0FE; /* fuchsia-200 */
-  --color-2: #D8B4FE; /* purple-300 */
-  --color-3: #C084FC; /* purple-400 */
-  --color-4: #204941; /* purple-900 */
+  --color-1: #BBF7D0; /* green-200 */
+  --color-2: #5EEAD4; /* teal-300 */
+  --color-3: #2DD4BF; /* teal-400 */
+  --color-4: #134E4A; /* teal-900 */
   --color-select: #3B82F6; /* blue-500 */
   --color-select-darken: #1D4ED8; /* blue-700 */
-  --color-start: #22C55E; /* green-500 */
-  --color-start-running: #16A34A; /* green-600 */
-  --color-start-darken: #15803D; /* green-700 */
+  --color-start: #F59E0B; /* amber-500 */
+  --color-start-running: #D97706; /* amber-600 */
+  --color-start-darken: #B45309; /* amber-700 */
   --color-error-lighten: #F87171; /* red-400 */
   --color-error: #EF4444; /* red-500 */
   --color-error-darken: #B91C1C; /* red-700 */
 }
 
 [color-theme="theme3"] {
-  /* Second theme */
+  /* third theme */
   --color-black: #0A0A0A; /* neutral-950 */
   --color-dark: #171717; /* neutral-900 */
   --color-grey: #404040; /* neutral-700 */
   --color-lightgrey: #D4D4D4; /* neutral-300 */
   --color-white: #FAFAFA; /* neutral-50 */
-  --color-1: #F5D0FE; /* fuchsia-200 */
-  --color-2: #D8B4FE; /* purple-300 */
-  --color-3: #C084FC; /* purple-400 */
-  --color-4: #42471f; /* purple-900 */
-  --color-select: #3B82F6; /* blue-500 */
-  --color-select-darken: #1D4ED8; /* blue-700 */
-  --color-start: #22C55E; /* green-500 */
-  --color-start-running: #16A34A; /* green-600 */
-  --color-start-darken: #15803D; /* green-700 */
+  --color-1: #C7D2FE; /* indigo-200 */
+  --color-2: #7DD3FC; /* sky-300 */
+  --color-3: #38BDF8; /* sky-400 */
+  --color-4: #0C4A6E; /* sky-900 */
+  --color-select: #4F46E5; /* indigo-500 */
+  --color-select-darken: #4338CA; /* indigo-700 */
+  --color-start: #EC4899; /* pink-500 */
+  --color-start-running: #DB2777; /* pink-600 */
+  --color-start-darken: #BE185D; /* pink-700 */
   --color-error-lighten: #F87171; /* red-400 */
   --color-error: #EF4444; /* red-500 */
   --color-error-darken: #B91C1C; /* red-700 */
