@@ -7,6 +7,7 @@ export const useIPCEvents = () => {
   const runToast = useStore((state) => state.runToast);
   const setIsRunning = useStore((state) => state.setIsRunning);
   const updateMailSendStatus = useStore((state) => state.updateMailSendStatus);
+  const shouldShutdown = useStore((state) => state.shouldShutdown);
 
   const runMailer = (mailerArgs) => {
     window.electron.ipcRenderer.send('run-mailer', mailerArgs);
@@ -16,6 +17,7 @@ export const useIPCEvents = () => {
 
   const writeMailContentToTxt = () => {
     window.electron.ipcRenderer.send('save-data', contentText);
+    localStorage.setItem('mailContent', contentText);
     runToast('Mail content saved!');
   };
 
@@ -27,6 +29,9 @@ export const useIPCEvents = () => {
     const handleTrigger = (_event, args) => {
       if (args.trigger.message === 'mailSender-stop') {
         setIsRunning(false);
+        if (shouldShutdown) {
+          window.electron.ipcRenderer.send('shutdown');
+        }
       }
       if (args.trigger.message === 'mailSent') {
         updateMailSendStatus(args.trigger.mail);
@@ -40,7 +45,7 @@ export const useIPCEvents = () => {
       messageListener();
       triggerListener();
     };
-  }, []);
+  }, [shouldShutdown]);
 
   return { runMailer, writeMailContentToTxt };
 };

@@ -1,9 +1,10 @@
 import nodemailer from 'nodemailer';
 import fs from 'fs';
-import { shutdownComputer } from './shutdown';
 
+import { is } from '@electron-toolkit/utils';
 import { contentFilePath, privateConfigFilePath } from './utils/file-paths';
 import { getEventSender, initEventSender } from './event-sender';
+import { delay } from '../utils/delay';
 
 let log;
 let trigger;
@@ -50,13 +51,6 @@ fs.watchFile(privateConfigFilePath, () => {
       .catch((err) => console.error('Failed to reload config:', err));
   }, 1000);
 });
-
-// Delay function like sleep() in python
-function delay(time) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, time);
-  });
-}
 
 // Define the email options
 let mailOptions = {};
@@ -111,13 +105,19 @@ async function mailSender(selectedMailIndex) {
 let sanitizedMailList = [];
 // load mailList and remove duplicates
 function updateSheet(mailList) {
-  // map just the email addresses and filter out the ones that don't have an @
-  const plainMailList = mailList.map((row) => row.emails).filter((email) => email.includes('@'));
+  // map just the email addresses and filter out the ones that don't have an @ and have already been sent
+  const plainMailList = mailList
+    .filter((email) => {
+      return email.emails.includes('@') && !email.sent;
+    })
+    .map((row) => row.emails);
   // Remove duplicates
   sanitizedMailList = removeDuplicates(plainMailList);
-  log(sanitizedMailList);
-  log('Completed removing duplicates from current sheet');
-  log('Completed loading current sheet with ' + sanitizedMailList.length + ' entries mulaa');
+  if (sanitizedMailList.length === 0) {
+    log('There are no mails to send, please add some and mark them as "not sent"');
+    return;
+  }
+  log('Completed loading current sheet with ' + sanitizedMailList.length + ' entries');
 }
 
 // remove Duplicates from array
@@ -131,7 +131,7 @@ function removeDuplicates(arr) {
 }
 
 //Main
-async function main(selectedMailIndex, shouldShutdown, mailTitle, mailList) {
+async function main(selectedMailIndex, mailTitle, mailList) {
   const config = await useConfig();
   if (!config) {
     log('No config found');
@@ -147,7 +147,10 @@ async function main(selectedMailIndex, shouldShutdown, mailTitle, mailList) {
   for (let i = 0; i < sanitizedMailList.length; i++) {
     await changeMailOptions(sanitizedMailList[i], selectedMailIndex, mailTitle);
     try {
-      await mailSender(selectedMailIndex);
+      if (is.dev) {
+        log('DEV MODE: Skipping sending next email...');
+        await mailSender(selectedMailIndex);
+      }
     } catch (error) {
       log(error);
       isError = true;
@@ -164,19 +167,13 @@ async function main(selectedMailIndex, shouldShutdown, mailTitle, mailList) {
   }
   await delay(2000);
   log('No more EMAILS! Pypenschuch, Bot ist fertig :)');
-
-  if (shouldShutdown) {
-    await delay(5000);
-    log('Gute Nacht! Shutting down...');
-    shutdownComputer(log);
-  }
 }
 
 export async function startMailSender(event, mailerArgs) {
   initEventSender(event);
   log = trigger = getEventSender();
 
-  const { selectedMailIndex, shouldShutdown, mailTitle, mailList } = mailerArgs;
+  const { selectedMailIndex, mailTitle, mailList } = mailerArgs;
 
   try {
     const config = await useConfig();
@@ -184,11 +181,12 @@ export async function startMailSender(event, mailerArgs) {
     const senderEmail = config.mailcredentials[selectedMailIndex].email;
     log(`Starting mail sender for ${senderName}, ${senderEmail}`);
   } catch (error) {
+    delay(1000).then(() => trigger({ trigger: { message: 'mailSender-stop' } }));
     log('Failed to read config file', error);
     return;
   }
 
-  main(selectedMailIndex, shouldShutdown, mailTitle, mailList)
+  main(selectedMailIndex, mailTitle, mailList)
     .then(() => {
       log('Mail Sender finished');
     })

@@ -12,10 +12,28 @@ export const useStore = create((set, get) => ({
       return { messageLog: [...state.messageLog, `[${timestamp}] - ${message}`] };
     }),
 
-  mailTitle: localStorage.getItem('mailTitle') || 'Photo and video editing services!',
+  initialData: { contentSettings: { mailTitle: '', contentText: '' } },
+  setInitialData: async () => {
+    const mailTitle = localStorage.getItem('mailTitle') || 'Insert mail title here...';
+    const contentText = await window.api.readContentFile();
+    set({ initialData: { contentSettings: { mailTitle, contentText } } });
+    get().setContentText(contentText);
+  },
+  updateInitialDataContentSettings: () => {
+    set({
+      initialData: {
+        contentSettings: { mailTitle: get().mailTitle, contentText: get().contentText }
+      }
+    });
+  },
+
+  mailTitle: localStorage.getItem('mailTitle') || 'Insert mail title here...',
   setMailTitle: (title) => {
-    localStorage.setItem('mailTitle', title);
     set({ mailTitle: title });
+  },
+  setMailTitleInLocalStorage: () => {
+    const title = get().mailTitle;
+    localStorage.setItem('mailTitle', title);
   },
 
   contentText: '',
@@ -53,5 +71,12 @@ export const useStore = create((set, get) => ({
       return row;
     });
     setMailList(updatedMailList);
+  },
+
+  theme: localStorage.getItem('theme') || 'default',
+  setTheme: (newTheme) => {
+    set({ theme: newTheme });
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.setAttribute('color-theme', newTheme);
   }
 }));

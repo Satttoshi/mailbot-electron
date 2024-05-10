@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useStore } from '../hooks/useStore';
 import Button from './Button';
+import ThemeSwitch from './ThemeSwitch';
 
 function Settings() {
   const [formData, setFormData] = useState({
@@ -70,16 +71,13 @@ function Settings() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      <form
-        className="w-full max-w-full bg-purple-900 shadow-md rounded p-4"
-        onSubmit={handleSubmit}
-      >
+      <form className="w-full max-w-full bg-4 rounded p-4" onSubmit={handleSubmit}>
         <label className="block text-white text-sm font-bold mb-2">Sender Emails</label>
         {formData.mailcredentials.map((credential, index) => (
           <div key={index} className="mb-4">
             <div className="flex gap-4 mb-2">
               <input
-                className="shadow appearance-none border rounded w-32 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-32 py-2 px-3 text-grey leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
                 placeholder="Name"
                 value={credential.name}
@@ -87,7 +85,7 @@ function Settings() {
                 onChange={(e) => handleMailCredentialsChange(index, 'name', e.target.value)}
               />
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-grey leading-tight focus:outline-none focus:shadow-outline"
                 type="email"
                 placeholder="Email"
                 value={credential.email}
@@ -95,7 +93,7 @@ function Settings() {
                 onChange={(e) => handleMailCredentialsChange(index, 'email', e.target.value)}
               />
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-grey leading-tight focus:outline-none focus:shadow-outline"
                 type="password"
                 placeholder="Password"
                 value={credential.password}
@@ -118,7 +116,7 @@ function Settings() {
               Min:
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-grey leading-tight focus:outline-none focus:shadow-outline"
               id="min"
               type="number"
               name="min"
@@ -131,7 +129,7 @@ function Settings() {
               Max:
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-grey leading-tight focus:outline-none focus:shadow-outline"
               id="max"
               type="number"
               name="max"
@@ -144,6 +142,7 @@ function Settings() {
           <Button variant="blue" label="Update Settings" type="submit" />
         </div>
       </form>
+      <ThemeSwitch />
     </div>
   );
 }

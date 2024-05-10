@@ -1,10 +1,10 @@
 import MailContentSettings from '../components/MailContentSettings';
 import PageWrapper from '../components/PageWrapper';
 
-const ContentSettings = ({ writeMailContentToTxt }) => {
+const ContentSettings = ({ onSave }) => {
   return (
     <PageWrapper>
-      <MailContentSettings onSave={writeMailContentToTxt} />
+      <MailContentSettings onSave={onSave} />
     </PageWrapper>
   );
 };
