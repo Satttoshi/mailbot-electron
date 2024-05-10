@@ -70,10 +70,7 @@ function Settings() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      <form
-        className="w-full max-w-full bg-purple-900 shadow-md rounded p-4"
-        onSubmit={handleSubmit}
-      >
+      <form className="w-full max-w-full bg-purple-900 rounded p-4" onSubmit={handleSubmit}>
         <label className="block text-white text-sm font-bold mb-2">Sender Emails</label>
         {formData.mailcredentials.map((credential, index) => (
           <div key={index} className="mb-4">
