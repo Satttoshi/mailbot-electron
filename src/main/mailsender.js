@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import fs from 'fs';
 
+import { is } from '@electron-toolkit/utils';
 import { contentFilePath, privateConfigFilePath } from './utils/file-paths';
 import { getEventSender, initEventSender } from './event-sender';
 import { delay } from '../utils/delay';
@@ -140,7 +141,10 @@ async function main(selectedMailIndex, mailTitle, mailList) {
   for (let i = 0; i < sanitizedMailList.length; i++) {
     await changeMailOptions(sanitizedMailList[i], selectedMailIndex, mailTitle);
     try {
-      await mailSender(selectedMailIndex);
+      if (is.dev) {
+        log('Dev mode: Skip sending email...');
+        await mailSender(selectedMailIndex);
+      }
     } catch (error) {
       log(error);
       isError = true;
