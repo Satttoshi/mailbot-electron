@@ -1,19 +1,12 @@
-import { useEffect } from 'react';
 import { useStore } from '../hooks/useStore';
 import Button from './Button';
 
 function Textarea({ onSave }) {
-  const contentText = useStore((state) => state.contentText);
+  const content = useStore((state) => state.contentText);
   const setContentText = useStore((state) => state.setContentText);
+  const initialData = useStore((state) => state.initialData);
 
-  useEffect(() => {
-    const fetchFileContent = async () => {
-      const fileContent = await window.api.readContentFile();
-      setContentText(fileContent);
-    };
-
-    fetchFileContent().catch(console.error);
-  }, []);
+  const isChanging = content !== initialData.contentSettings.contentText;
 
   function handleChange(event) {
     setContentText(event.target.value);
@@ -22,14 +15,20 @@ function Textarea({ onSave }) {
   return (
     <>
       <div className="flex-grow flex flex-col items-center justify-center mt-2 pb-3">
-        <label className="self-start block text-white text-sm font-bold mb-2">Content</label>
+        <label className="self-start text-white text-sm font-bold mb-2 w-full flex justify-between">
+          Content
+          {isChanging && (
+            <span className="text-red-400 font-light italic"> changes detected, save changes!</span>
+          )}
+        </label>
+
         <textarea
           className="resize-none w-full flex-grow p-2.5 text-sm text-gray-800 shadow-md bg-white border border-solid border-gray-300 rounded transition ease-in-out focus:border-blue-600 focus:outline-none"
-          value={contentText}
+          value={content}
           onChange={handleChange}
           placeholder="Type something..."
         />
-        <Button className="mt-3" label="Save Content" variant="blue" onClick={onSave} />
+        <Button className="mt-3" label="Save Changes" variant="blue" onClick={onSave} />
       </div>
     </>
   );

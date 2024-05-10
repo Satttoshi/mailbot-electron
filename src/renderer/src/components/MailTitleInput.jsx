@@ -5,6 +5,9 @@ const MailTitleInput = () => {
     mailTitle: state.mailTitle,
     setMailTitle: state.setMailTitle
   }));
+  const initialData = useStore((state) => state.initialData);
+
+  const isChanging = mailTitle !== initialData.contentSettings.mailTitle;
 
   const handleTitleChange = (event) => {
     setMailTitle(event.target.value);
@@ -12,8 +15,11 @@ const MailTitleInput = () => {
 
   return (
     <div className="mb-2">
-      <label htmlFor="mailTitle" className="block text-white text-sm font-bold mb-2">
+      <label htmlFor="mailTitle" className="text-white text-sm font-bold mb-2 flex justify-between">
         Title
+        {isChanging && (
+          <span className="text-red-400 font-light italic"> changes detected, save changes!</span>
+        )}
       </label>
       <input
         type="text"
