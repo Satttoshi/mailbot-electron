@@ -71,5 +71,12 @@ export const useStore = create((set, get) => ({
       return row;
     });
     setMailList(updatedMailList);
+  },
+
+  theme: localStorage.getItem('theme') || 'default',
+  setTheme: (newTheme) => {
+    set({ theme: newTheme });
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.setAttribute('color-theme', newTheme);
   }
 }));

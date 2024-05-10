@@ -17,9 +17,11 @@ function App() {
   const updateInitialDataContentSettings = useStore(
     (state) => state.updateInitialDataContentSettings
   );
+  const theme = useStore((state) => state.theme);
   const { runMailer, writeMailContentToTxt } = useIPCEvents();
 
   useEffect(() => {
+    document.documentElement.setAttribute('color-theme', theme);
     loadMailNames()
       .then(() => setInitialData().catch(console.error))
       .catch(console.error);
