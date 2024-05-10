@@ -5,7 +5,7 @@ import { is } from '@electron-toolkit/utils';
 
 function shutdownComputer(log) {
   if (is.dev) {
-    log('Dev Mode: Would have shut down the computer now');
+    log('DEV MODE: Would have shut down the computer now');
     return;
   }
   delay(5000).then(() => {

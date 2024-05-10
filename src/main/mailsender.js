@@ -105,13 +105,20 @@ async function mailSender(selectedMailIndex) {
 let sanitizedMailList = [];
 // load mailList and remove duplicates
 function updateSheet(mailList) {
-  // map just the email addresses and filter out the ones that don't have an @
-  const plainMailList = mailList.map((row) => row.emails).filter((email) => email.includes('@'));
+  // map just the email addresses and filter out the ones that don't have an @ and have already been sent
+  const plainMailList = mailList
+    .filter((email) => {
+      console.log('Email: ', email, 'Sent: ', email.sent);
+      return email.emails.includes('@') && !email.sent;
+    })
+    .map((row) => row.emails);
   // Remove duplicates
   sanitizedMailList = removeDuplicates(plainMailList);
-  log(sanitizedMailList);
-  log('Completed removing duplicates from current sheet');
-  log('Completed loading current sheet with ' + sanitizedMailList.length + ' entries mulaa');
+  if (sanitizedMailList.length === 0) {
+    log('There are no mails to send, please add some and mark them as "not sent"');
+    return;
+  }
+  log('Completed loading current sheet with ' + sanitizedMailList.length + ' entries');
 }
 
 // remove Duplicates from array
@@ -142,7 +149,7 @@ async function main(selectedMailIndex, mailTitle, mailList) {
     await changeMailOptions(sanitizedMailList[i], selectedMailIndex, mailTitle);
     try {
       if (is.dev) {
-        log('Dev mode: Skip sending email...');
+        log('DEV MODE: Skipping sending next email...');
         await mailSender(selectedMailIndex);
       }
     } catch (error) {
