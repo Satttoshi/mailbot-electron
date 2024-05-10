@@ -44,7 +44,7 @@ export const useIPCEvents = () => {
       messageListener();
       triggerListener();
     };
-  }, []);
+  }, [shouldShutdown]);
 
   return { runMailer, writeMailContentToTxt };
 };
