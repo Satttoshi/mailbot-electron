@@ -4,16 +4,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'color-dark': 'var(--color-dark)',
-        'color-light': 'var(--color-light)',
-        'color-1': 'var(--color-1)',
-        'color-2': 'var(--color-2)',
-        'color-3': 'var(--color-3)',
-        'color-4': 'var(--color-4)',
-        'color-5': 'var(--color-5)',
-        'color-red': 'var(--color-red)',
-        'color-green': 'var(--color-green)',
-        'color-blue': 'var(--color-blue)'
+        black: 'var(--color-black)',
+        dark: 'var(--color-dark)',
+        grey: 'var(--color-grey)',
+        lightgrey: 'var(--color-lightgrey)',
+        white: 'var(--color-white)',
+        1: 'var(--color-1)',
+        2: 'var(--color-2)',
+        3: 'var(--color-3)',
+        4: 'var(--color-4)',
+        select: 'var(--color-select)',
+        'select-darken': 'var(--color-select-darken)',
+        start: 'var(--color-start)',
+        'start-running': 'var(--color-start-running)',
+        'start-darken': 'var(--color-start-darken)',
+        'error-lighten': 'var(--color-error-lighten)',
+        error: 'var(--color-error)',
+        'error-darken': 'var(--color-error-darken)'
       }
     }
   },

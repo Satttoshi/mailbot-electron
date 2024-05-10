@@ -14,7 +14,7 @@ const BottomContainer = ({ runMailer }) => {
   const mailerArgs = { selectedMailIndex, mailTitle, mailList };
 
   return (
-    <div className="w-full h-full flex gap-4 bg-purple-300 rounded p-4">
+    <div className="w-full h-full flex gap-4 bg-2 rounded p-4">
       <div className="flex flex-col gap-2">
         <Button
           onClick={() => runMailer(mailerArgs)}

@@ -18,12 +18,14 @@ function Textarea({ onSave }) {
         <label className="self-start text-white text-sm font-bold mb-2 w-full flex justify-between">
           Content
           {isChanging && (
-            <span className="text-red-400 font-light italic"> changes detected, save changes!</span>
+            <span className="text-error-lighten font-light italic">
+              changes detected, save changes!
+            </span>
           )}
         </label>
 
         <textarea
-          className="resize-none w-full flex-grow p-2.5 text-sm text-gray-800 shadow-md bg-white border border-solid border-gray-300 rounded transition ease-in-out focus:border-blue-600 focus:outline-none"
+          className="resize-none w-full flex-grow p-2.5 text-sm text-grey shadow-md bg-white border border-solid border-grey rounded transition ease-in-out focus:border-select focus:outline-none"
           value={content}
           onChange={handleChange}
           placeholder="Type something..."

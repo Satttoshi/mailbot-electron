@@ -1,27 +1,41 @@
 :root {
   /* Default theme */
-  --color-dark: #333333;
-  --color-light: #f8f9fa;
-  --color-1: #e63946;
-  --color-2: #f4a261;
-  --color-3: #2a9d8f;
-  --color-4: #264653;
-  --color-5: #e9c46a;
-  --color-red: #d62828;
-  --color-green: #2a9d8f;
-  --color-blue: #457b9d;
+  --color-black: #0A0A0A; /* neutral-950 */
+  --color-dark: #171717; /* neutral-900 */
+  --color-grey: #404040; /* neutral-700 */
+  --color-lightgrey: #D4D4D4; /* neutral-300 */
+  --color-white: #FAFAFA; /* neutral-50 */
+  --color-1: #F5D0FE; /* fuchsia-200 */
+  --color-2: #D8B4FE; /* purple-300 */
+  --color-3: #C084FC; /* purple-400 */
+  --color-4: #581C87; /* purple-900 */
+  --color-select: #3B82F6; /* blue-500 */
+  --color-select-darken: #1D4ED8; /* blue-700 */
+  --color-start: #22C55E; /* green-500 */
+  --color-start-running: #16A34A; /* green-600 */
+  --color-start-darken: #15803D; /* green-700 */
+  --color-error-lighten: #F87171; /* red-400 */
+  --color-error: #EF4444; /* red-500 */
+  --color-error-darken: #B91C1C; /* red-700 */
 }
 
 [color-theme="theme2"] {
   /* Second theme */
-  --color-dark: #282c34;
-  --color-light: #ffffff;
-  --color-1: #ff595e;
-  --color-2: #ffca3a;
-  --color-3: #8ac926;
-  --color-4: #1982c4;
-  --color-5: #6a4c93;
-  --color-red: #e63946;
-  --color-green: #058c42;
-  --color-blue: #0077b6;
+  --color-black: #0A0A0A; /* neutral-950 */
+  --color-dark: #171717; /* neutral-900 */
+  --color-grey: #404040; /* neutral-700 */
+  --color-lightgrey: #D4D4D4; /* neutral-300 */
+  --color-white: #FAFAFA; /* neutral-50 */
+  --color-1: #F5D0FE; /* fuchsia-200 */
+  --color-2: #D8B4FE; /* purple-300 */
+  --color-3: #C084FC; /* purple-400 */
+  --color-4: #581C87; /* purple-900 */
+  --color-select: #3B82F6; /* blue-500 */
+  --color-select-darken: #1D4ED8; /* blue-700 */
+  --color-start: #22C55E; /* green-500 */
+  --color-start-running: #16A34A; /* green-600 */
+  --color-start-darken: #15803D; /* green-700 */
+  --color-error-lighten: #F87171; /* red-400 */
+  --color-error: #EF4444; /* red-500 */
+  --color-error-darken: #B91C1C; /* red-700 */
 }

@@ -13,7 +13,7 @@ function Textarea() {
           el.scrollTop = el.scrollHeight;
         }
       }}
-      className="resize-none block w-full max-h-full p-2.5 text-sm text-white shadow-md bg-purple-900 bg-clip-padding rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      className="resize-none block w-full max-h-full p-2.5 text-sm text-white shadow-md bg-4 bg-clip-padding rounded transition ease-in-out m-0 focus:grey focus:bg-white focus:border-select focus:outline-none"
       value={log}
       placeholder="idle..."
       readOnly

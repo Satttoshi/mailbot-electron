@@ -21,11 +21,10 @@
 }
 
 body {
-  @apply bg-fuchsia-200;
+  @apply bg-1;
   font-family: 'Figtree', Arial, sans-serif;
 }
 
-/* Custom Scrollbar Styles */
 .scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #b6b6b6 transparent;
@@ -34,12 +33,12 @@ body {
 .scrollbar::-webkit-scrollbar {
   width: 0.5rem;
   @apply rounded-r;
-  @apply bg-purple-300;
+  @apply bg-2;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
   @apply rounded-r;
-  @apply bg-blue-400;
+  @apply bg-select;
 }
 
 .scrollbar::-webkit-scrollbar-track {

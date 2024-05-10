@@ -4,9 +4,9 @@ import animationData from '../assets/lottiefiles/paper-plane';
 const Button = ({ label, variant, onClick, className, type = 'button', loading, ...props }) => {
   const baseStyle = 'relative font-bold px-4 rounded focus:outline-none whitespace-nowrap';
   const variants = {
-    green: `flex justify-center items-center py-0 w-[180px] h-[60px] bg-green-500 z-10 text-slate-800 transition-colors duration-300 ${loading ? 'bg-green-600 cursor-not-allowed' : 'hover:bg-green-700 hover:text-white'}`,
-    blue: 'py-2 bg-blue-500 hover:bg-blue-700 text-white',
-    red: 'py-2 bg-red-500 hover:bg-red-700 text-white w-24 px-3'
+    green: `flex justify-center items-center py-0 w-[180px] h-[60px] bg-start z-10 text-dark transition-colors duration-300 ${loading ? 'bg-start-running cursor-not-allowed' : 'hover:bg-start-darken hover:text-white'}`,
+    blue: 'py-2 bg-select hover:bg-select-darken text-white',
+    red: 'py-2 bg-error hover:bg-error-darken text-white w-24 px-3'
   };
 
   const buttonStyle = `${baseStyle} ${variants[variant] || ''} ${className || ''}`;
