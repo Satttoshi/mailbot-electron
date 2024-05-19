@@ -11,7 +11,7 @@ function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
-    height: 670,
+    height: 920,
     title: 'Pypenschuch Bot',
     show: false,
     icon: appPath + '/resources/icon.ico',
