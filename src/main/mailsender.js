@@ -149,6 +149,7 @@ async function main(selectedMailIndex, mailTitle, mailList) {
     try {
       if (is.dev) {
         log('DEV MODE: Skipping sending next email...');
+      } else {
         await mailSender(selectedMailIndex);
       }
     } catch (error) {
