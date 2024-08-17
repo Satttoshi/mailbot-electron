@@ -7,12 +7,22 @@ import { useStore } from '../hooks/useStore';
 
 const emailRegex = /^\S+@\S+\.\S+$/;
 
-// Handler to sanitize the email rows, filters empty rows, and rows without '@', and reorders serial numbers
+// Handler to sanitize the email rows
 function sanitizeEmailRows(rows) {
-  return rows
-    .filter((row) => row.emails !== '')
-    .filter((row) => row.emails.includes('@'))
-    .map((row, index) => ({ ...row, '#': index + 1 }));
+  return (
+    rows
+      // Remove special characters not usually found in email addresses
+      .map((row) => {
+        row.emails = row.emails.replace(/[!"#$%&'()*,:;<=>?[\]^`{|}~]/g, '');
+        return row;
+      })
+      // Remove rows with empty email
+      .filter((row) => row.emails !== '')
+      // Remove rows with invalid email without @
+      .filter((row) => row.emails.includes('@'))
+      // Add index to the rows
+      .map((row, index) => ({ ...row, '#': index + 1 }))
+  );
 }
 
 // Handler to check if the last row with empty email is present while editing, if not add one
