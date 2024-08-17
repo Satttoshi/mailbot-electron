@@ -4,3 +4,5 @@ out
 .DS_Store
 *.log*
 .env
+resources/content-*.txt
+resources/private-config.json
