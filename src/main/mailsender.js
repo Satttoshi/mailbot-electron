@@ -33,6 +33,7 @@ async function useConfig() {
     return await readConfig();
   } catch (error) {
     console.error('Failed to read or parse the config file:', error);
+    console.log('Trying to generate private-config.json file ...');
     return null;
   }
 }

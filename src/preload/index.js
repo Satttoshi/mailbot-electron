@@ -51,7 +51,7 @@ if (process.contextIsolated) {
   window.api = api;
 }
 
-// create content file txt if there is none
+// create content files if there are none
 const createContentFile = async (index) => {
   const appPath = await ipcRenderer.invoke('get-app-path');
   const filePath = path.join(appPath, 'resources', `${fileConfig.contentFileName}-${index}.txt`);
@@ -73,3 +73,23 @@ const createContentFiles = async () => {
 };
 
 createContentFiles().catch(console.error);
+
+// create private config file if there is none
+const createPrivateConfigFile = async () => {
+  const defaultConfig = {
+    mailcredentials: [],
+    min: '10',
+    max: '20'
+  };
+
+  const appPath = await ipcRenderer.invoke('get-app-path');
+  const filePath = path.join(appPath, 'resources', `${fileConfig.privateConfigFileName}.json`);
+  if (fs.existsSync(filePath)) return;
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(defaultConfig, null, 2), 'utf-8');
+  } catch (error) {
+    console.error('Error creating file:', error);
+  }
+};
+
+createPrivateConfigFile().catch(console.error);
