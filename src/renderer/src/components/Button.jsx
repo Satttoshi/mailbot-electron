@@ -6,7 +6,8 @@ const Button = ({ label, variant, onClick, className, type = 'button', loading, 
   const variants = {
     green: `flex justify-center items-center py-0 w-[180px] h-[60px] bg-start z-10 text-dark transition-colors duration-300 ${loading ? 'bg-start-running cursor-not-allowed' : 'hover:bg-start-darken hover:text-white'}`,
     blue: 'py-2 bg-select hover:bg-select-darken text-white',
-    red: 'py-2 bg-error hover:bg-error-darken text-white w-24 px-3'
+    red: 'py-2 bg-error hover:bg-error-darken text-white w-24 px-3',
+    basic: 'py-1 bg-white text-black text-xs hover:bg-grey hover:text-white'
   };
 
   const buttonStyle = `${baseStyle} ${variants[variant] || ''} ${className || ''}`;

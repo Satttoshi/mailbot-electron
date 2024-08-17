@@ -24,25 +24,16 @@ function Textarea({ onSave }) {
 
   return (
     <>
-      <div className="flex gap-2">
-        <Button
-          className={contentFileIndex === 0 && 'border-2 border-white'}
-          label="Text 1"
-          variant="blue"
-          onClick={() => handleSwitchContentFile(0)}
-        />
-        <Button
-          className={contentFileIndex === 1 && 'border-2 border-white'}
-          label="Text 2"
-          variant="blue"
-          onClick={() => handleSwitchContentFile(1)}
-        />
-        <Button
-          className={contentFileIndex === 2 && 'border-2 border-white'}
-          label="Text 3"
-          variant="blue"
-          onClick={() => handleSwitchContentFile(2)}
-        />
+      <div className="flex gap-2 overflow-hidden">
+        {[...Array(10)].map((_, i) => (
+          <Button
+            key={i + 'text'}
+            className={contentFileIndex === i ? 'border border-white !bg-dark !text-white' : ''}
+            label={`${i + 1}`}
+            variant="basic"
+            onClick={() => handleSwitchContentFile(i)}
+          />
+        ))}
       </div>
       <div className="flex-grow flex flex-col items-center justify-center mt-2 pb-3">
         <label className="self-start text-white text-sm font-bold mb-2 w-full flex justify-between">
@@ -53,7 +44,6 @@ function Textarea({ onSave }) {
             </span>
           )}
         </label>
-
         <textarea
           className="resize-none w-full flex-grow p-2.5 text-sm text-grey shadow-md bg-white border border-solid border-grey rounded transition ease-in-out focus:border-select focus:outline-none"
           value={content}
