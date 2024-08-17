@@ -39,7 +39,7 @@ export const useStore = create((set, get) => ({
   contentText: '',
   setContentText: (content) => set({ contentText: content }),
 
-  contentFileIndex: localStorage.getItem('contentFileIndex') || 0,
+  contentFileIndex: parseInt(localStorage.getItem('contentFileIndex'), 10) || 0,
   setContentFileIndex: (index) => {
     localStorage.setItem('contentFileIndex', index);
     set({ contentFileIndex: index });

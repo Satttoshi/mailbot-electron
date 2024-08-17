@@ -20,6 +20,8 @@ function Textarea({ onSave }) {
     setInitialData().catch(console.error);
   }
 
+  console.log('contentFileIndex', contentFileIndex);
+
   return (
     <>
       <div className="flex gap-2">
