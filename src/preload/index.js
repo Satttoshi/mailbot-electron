@@ -4,9 +4,13 @@ import fs from 'fs';
 import path from 'path';
 import fileConfig from '../../file.config';
 
-const readContentFile = async () => {
+const readContentFile = async (contentFileIndex) => {
   const appPath = await ipcRenderer.invoke('get-app-path');
-  const filePath = path.join(appPath, `resources/${fileConfig.contentFileName}.txt`);
+  const filePath = path.join(
+    appPath,
+    'resources',
+    `${fileConfig.contentFileName}-${contentFileIndex}.txt`
+  );
   try {
     return fs.readFileSync(filePath, { encoding: 'utf-8' });
   } catch (error) {

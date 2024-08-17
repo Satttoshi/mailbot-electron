@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 import fs from 'fs';
 
 import { is } from '@electron-toolkit/utils';
-import { contentFilePath, privateConfigFilePath } from './utils/file-paths';
+import { getContentFilePath, privateConfigFilePath } from './utils/file-paths';
 import { getEventSender, initEventSender } from './event-sender';
 import { delay } from '../utils/delay';
 
@@ -55,7 +55,8 @@ fs.watchFile(privateConfigFilePath, () => {
 // Define the email options
 let mailOptions = {};
 
-async function changeMailOptions(mail, selectedMailIndex, mailTitle) {
+async function changeMailOptions(mail, selectedMailIndex, mailTitle, contentFileIndex) {
+  const contentFilePath = getContentFilePath(contentFileIndex);
   const config = await useConfig();
   const content = fs.readFileSync(contentFilePath, 'utf-8');
   console.log(selectedMailIndex);
@@ -131,7 +132,7 @@ function removeDuplicates(arr) {
 }
 
 //Main
-async function main(selectedMailIndex, mailTitle, mailList) {
+async function main(selectedMailIndex, mailTitle, mailList, contentFileIndex) {
   const config = await useConfig();
   if (!config) {
     log('No config found');
@@ -145,7 +146,7 @@ async function main(selectedMailIndex, mailTitle, mailList) {
 
   //Add Timestamps, update Mail configs
   for (let i = 0; i < sanitizedMailList.length; i++) {
-    await changeMailOptions(sanitizedMailList[i], selectedMailIndex, mailTitle);
+    await changeMailOptions(sanitizedMailList[i], selectedMailIndex, mailTitle, contentFileIndex);
     try {
       if (is.dev) {
         log('DEV MODE: Skipping sending next email...');
@@ -174,7 +175,7 @@ export async function startMailSender(event, mailerArgs) {
   initEventSender(event);
   log = trigger = getEventSender();
 
-  const { selectedMailIndex, mailTitle, mailList } = mailerArgs;
+  const { selectedMailIndex, mailTitle, mailList, contentFileIndex } = mailerArgs;
 
   try {
     const config = await useConfig();
@@ -187,7 +188,7 @@ export async function startMailSender(event, mailerArgs) {
     return;
   }
 
-  main(selectedMailIndex, mailTitle, mailList)
+  main(selectedMailIndex, mailTitle, mailList, contentFileIndex)
     .then(() => {
       log('Mail Sender finished');
     })
