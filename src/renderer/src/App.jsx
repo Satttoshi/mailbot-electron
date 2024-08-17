@@ -17,6 +17,7 @@ function App() {
   const updateInitialDataContentSettings = useStore(
     (state) => state.updateInitialDataContentSettings
   );
+  const contentFileIndex = useStore((state) => state.contentFileIndex);
   const theme = useStore((state) => state.theme);
   const { runMailer, writeMailContentToTxt } = useIPCEvents();
 
@@ -29,7 +30,7 @@ function App() {
 
   const handleSave = () => {
     updateInitialDataContentSettings();
-    writeMailContentToTxt();
+    writeMailContentToTxt(contentFileIndex);
     setMailTitleInLocalStorage();
   };
 

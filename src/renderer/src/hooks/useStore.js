@@ -15,7 +15,7 @@ export const useStore = create((set, get) => ({
   initialData: { contentSettings: { mailTitle: '', contentText: '' } },
   setInitialData: async () => {
     const mailTitle = localStorage.getItem('mailTitle') || 'Insert mail title here...';
-    const contentText = await window.api.readContentFile();
+    const contentText = await window.api.readContentFile(get().contentFileIndex);
     set({ initialData: { contentSettings: { mailTitle, contentText } } });
     get().setContentText(contentText);
   },
@@ -38,6 +38,12 @@ export const useStore = create((set, get) => ({
 
   contentText: '',
   setContentText: (content) => set({ contentText: content }),
+
+  contentFileIndex: parseInt(localStorage.getItem('contentFileIndex'), 10) || 0,
+  setContentFileIndex: (index) => {
+    localStorage.setItem('contentFileIndex', index);
+    set({ contentFileIndex: index });
+  },
 
   runToast: (message) => toast(message),
 

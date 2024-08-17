@@ -15,8 +15,9 @@ export const useIPCEvents = () => {
     runToast('Bot started!');
   };
 
-  const writeMailContentToTxt = () => {
-    window.electron.ipcRenderer.send('save-data', contentText);
+  const writeMailContentToTxt = (index) => {
+    const args = { contentText, index: index };
+    window.electron.ipcRenderer.send('save-data', args);
     localStorage.setItem('mailContent', contentText);
     runToast('Mail content saved!');
   };

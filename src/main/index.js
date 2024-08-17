@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import { startMailSender } from './mailsender';
 import fs from 'fs';
-import { appPath, contentFilePath, privateConfigFilePath } from './utils/file-paths';
+import { appPath, getContentFilePath, privateConfigFilePath } from './utils/file-paths';
 import { shutdown } from './shutdown';
 
 function createWindow() {
@@ -62,9 +62,12 @@ app.whenReady().then(() => {
   // IPC
   ipcMain.on('run-mailer', (event, mailerArgs) => startMailSender(event, mailerArgs));
 
-  ipcMain.on('save-data', (event, data) => {
+  // Save content data into txt file
+  ipcMain.on('save-data', (event, args) => {
+    const { contentText, index } = args;
+    const contentFilePath = getContentFilePath(index);
     console.log('Saving data to', contentFilePath);
-    fs.writeFile(contentFilePath, data, (err) => {
+    fs.writeFile(contentFilePath, contentText, (err) => {
       if (err) {
         console.error('Failed to save data', err);
         return;

@@ -10,8 +10,9 @@ const BottomContainer = ({ runMailer }) => {
   const mailTitle = useStore((state) => state.mailTitle);
   const isRunning = useStore((state) => state.isRunning);
   const mailList = useStore((state) => state.mailList);
+  const contentFileIndex = useStore((state) => state.contentFileIndex);
 
-  const mailerArgs = { selectedMailIndex, mailTitle, mailList };
+  const mailerArgs = { selectedMailIndex, mailTitle, mailList, contentFileIndex: contentFileIndex };
 
   return (
     <div className="w-full h-full flex gap-4 bg-2 rounded p-4">
