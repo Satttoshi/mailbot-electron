@@ -1,11 +1,5 @@
 {
-  "mailcredentials": [
-    {
-      "name": "David",
-      "email": "david.novaknb@gmail.com",
-      "password": "ndrskyhefzafkpkm"
-    }
-  ],
+  "mailcredentials": [],
   "min": "10",
   "max": "20"
 }
